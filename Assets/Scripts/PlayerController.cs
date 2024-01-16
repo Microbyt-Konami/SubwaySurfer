@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     // Variables
     private bool swipeLeft, swipeRight, swipeUp, swipeDown;
     private float newXPosition, xPosition, yPosition;
+    private float rollTimer;
+    private bool isRolling, isJumping;
     private Vector3 motionVector;
 
     // Ids
@@ -28,6 +30,7 @@ public class PlayerController : MonoBehaviour
     private int idJump = Animator.StringToHash("Jump");
     private int idFall = Animator.StringToHash("Fall");
     private int idLanding = Animator.StringToHash("Landing");
+    private int idRoll = Animator.StringToHash("Roll");
 
     // Start is called before the first frame update
     void Start()
@@ -44,18 +47,22 @@ public class PlayerController : MonoBehaviour
     {
         GetSwipe();
         SetPlayerPosition();
-
+        MovePlayer();
+        Jump();
+        Roll();
     }
+
     private void GetSwipe()
     {
         swipeLeft = Input.GetKeyDown(KeyCode.LeftArrow);
         swipeRight = Input.GetKeyDown(KeyCode.RightArrow);
         swipeUp = Input.GetKeyDown(KeyCode.UpArrow);
+        swipeDown = Input.GetKeyDown(KeyCode.DownArrow);
     }
 
     private void SetPlayerPosition()
     {
-        if (swipeLeft)
+        if (swipeLeft && !isRolling)
         {
             switch (playerPosition)
             {
@@ -69,7 +76,7 @@ public class PlayerController : MonoBehaviour
                     break;
             }
         }
-        else if (swipeRight)
+        else if (swipeRight && !isRolling)
         {
             switch (playerPosition)
             {
@@ -83,8 +90,6 @@ public class PlayerController : MonoBehaviour
                     break;
             }
         }
-        MovePlayer();
-        Jump();
     }
 
     private void UpdatePlayerXPosition(PlayerPosition position)
@@ -119,6 +124,7 @@ public class PlayerController : MonoBehaviour
                 SetPlayerAnimator(idLanding, false);
             if (swipeUp)
             {
+                isJumping = true;
                 yPosition = jumpPower;
                 // Mezcla la animación actual con la de jump
                 //playerAnimation.CrossFadeInFixedTime(idJump, 0.1f);
@@ -127,9 +133,32 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            isJumping = false;
             // Se baja mas rápido
             yPosition -= jumpPower * 2 * Time.deltaTime;
             SetPlayerAnimator(idFall, false);
+        }
+    }
+
+    private void Roll()
+    {
+        rollTimer -= Time.deltaTime;
+        if (rollTimer <= 0)
+        {
+            isRolling = false;
+            rollTimer = 0;
+            // Poner ch a tamaño normal
+            characterController.center = new Vector3(0, .45f, 0);
+            characterController.height = .9f;
+        }
+        if (swipeDown)
+        {
+            isRolling = true;
+            rollTimer = .5f;
+            SetPlayerAnimator(idRoll, true);
+            // Poner ch a tamaño chico
+            characterController.center = new Vector3(0, .2f, 0);
+            characterController.height = .4f;
         }
     }
 }
