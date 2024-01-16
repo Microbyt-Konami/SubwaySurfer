@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour
     // Ids
     private int idDodgeLeft = Animator.StringToHash("DodgeLeft");
     private int idDodgeRight = Animator.StringToHash("DodgeRight");
+    private int idJump = Animator.StringToHash("Jump");
+    private int idFall = Animator.StringToHash("Fall");
+    private int idLanding = Animator.StringToHash("Landing");
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +36,7 @@ public class PlayerController : MonoBehaviour
         playerTransform = GetComponent<Transform>();
         playerAnimation = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
+        yPosition = -7;
     }
 
     // Update is called once per frame
@@ -57,11 +61,11 @@ public class PlayerController : MonoBehaviour
             {
                 case PlayerPosition.Middle:
                     UpdatePlayerXPosition(PlayerPosition.Left);
-                    SetPlayerAnimator(idDodgeLeft);
+                    SetPlayerAnimator(idDodgeLeft, false);
                     break;
                 case PlayerPosition.Right:
                     UpdatePlayerXPosition(PlayerPosition.Middle);
-                    SetPlayerAnimator(idDodgeLeft);
+                    SetPlayerAnimator(idDodgeLeft, false);
                     break;
             }
         }
@@ -71,11 +75,11 @@ public class PlayerController : MonoBehaviour
             {
                 case PlayerPosition.Middle:
                     UpdatePlayerXPosition(PlayerPosition.Right);
-                    SetPlayerAnimator(idDodgeRight);
+                    SetPlayerAnimator(idDodgeRight, false);
                     break;
                 case PlayerPosition.Left:
                     UpdatePlayerXPosition(PlayerPosition.Middle);
-                    SetPlayerAnimator(idDodgeRight);
+                    SetPlayerAnimator(idDodgeRight, false);
                     break;
             }
         }
@@ -89,9 +93,12 @@ public class PlayerController : MonoBehaviour
         playerPosition = position;
     }
 
-    private void SetPlayerAnimator(int id)
+    private void SetPlayerAnimator(int id, bool isCrossFade, float fadeTime = 0.1f)
     {
-        playerAnimation.Play(id);
+        if (isCrossFade)
+            playerAnimation.CrossFadeInFixedTime(id, fadeTime);
+        else
+            playerAnimation.Play(id);
     }
 
     private void MovePlayer()
@@ -107,13 +114,22 @@ public class PlayerController : MonoBehaviour
     {
         if (characterController.isGrounded)
         {
+            // 0 => corresponde al indice del layer por defecto es el 0
+            if (playerAnimation.GetCurrentAnimatorStateInfo(0).IsName("Fall"))
+                SetPlayerAnimator(idLanding, false);
             if (swipeUp)
+            {
                 yPosition = jumpPower;
+                // Mezcla la animación actual con la de jump
+                //playerAnimation.CrossFadeInFixedTime(idJump, 0.1f);
+                SetPlayerAnimator(idJump, true, 1f);
+            }
         }
         else
         {
             // Se baja mas rápido
             yPosition -= jumpPower * 2 * Time.deltaTime;
+            SetPlayerAnimator(idFall, false);
         }
     }
 }
