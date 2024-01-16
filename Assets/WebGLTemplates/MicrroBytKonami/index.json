@@ -22,8 +22,8 @@
 #if SYMBOLS_FILENAME
 		"symbolsFilename": "/{{{ SYMBOLS_FILENAME }}}",
 #endif
-		"companyName": { { { "JSON.stringify(COMPANY_NAME)" } } },
-		"productName": { { { "JSON.stringify(PRODUCT_NAME)" } } },
-		"productVersion": { { { "JSON.stringify(PRODUCT_VERSION)" } } }
+		"companyName": "{{{ COMPANY_NAME }}}",
+		"productName": "{{{ PRODUCT_NAME }}}",
+		"productVersion": "{{{ PRODUCT_VERSION }}}"
 	}
 }
