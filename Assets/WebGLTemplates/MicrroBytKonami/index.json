@@ -1,0 +1,29 @@
+{
+#if SHOW_DIAGNOSTICS
+	"showDiagnostics": true,
+#endif
+#if BACKGROUND_FILENAME
+	"backGroundFilename": true,
+#endif
+	"width": {{{ WIDTH }}},
+	"height": {{{ HEIGHT }}},
+	"config": {
+		"dataFilename": "/{{{ DATA_FILENAME }}}",
+		"frameworkFilename": "/{{{ FRAMEWORK_FILENAME }}}",
+#if USE_THREADS
+		"workerFilename": "/{{{ WORKER_FILENAME }}}",
+#endif
+#if USE_WASM
+		"codeFilename": "/{{{ CODE_FILENAME }}}",
+#endif
+#if MEMORY_FILENAME
+		"memoryUrl": "/{{{ MEMORY_FILENAME }}}",
+#endif
+#if SYMBOLS_FILENAME
+		"symbolsFilename": "/{{{ SYMBOLS_FILENAME }}}",
+#endif
+		"companyName": { { { "JSON.stringify(COMPANY_NAME)" } } },
+		"productName": { { { "JSON.stringify(PRODUCT_NAME)" } } },
+		"productVersion": { { { "JSON.stringify(PRODUCT_VERSION)" } } }
+	}
+}
