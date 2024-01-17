@@ -136,7 +136,9 @@ public class PlayerController : MonoBehaviour
             isJumping = false;
             // Se baja mas rápido
             yPosition -= jumpPower * 2 * Time.deltaTime;
-            SetPlayerAnimator(idFall, false);
+            // Si la velocidad en y <=0 es que esta cayendo
+            if (characterController.velocity.y <= 0)
+                SetPlayerAnimator(idFall, false);
         }
     }
 
