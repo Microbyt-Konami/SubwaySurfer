@@ -1,0 +1,30 @@
+{
+#if SHOW_DIAGNOSTICS
+	"showDiagnostics": true,
+#endif
+	"loaderFilename": "/{{{ LOADER_FILENAME }}}",
+#if BACKGROUND_FILENAME
+	"backGroundFilename": "/{{{ BACKGROUND_FILENAME",
+#endif
+	"width": {{{ WIDTH }}},
+	"height": {{{ HEIGHT }}},
+	"config": {
+		"dataFilename": "/{{{ DATA_FILENAME }}}",
+		"frameworkFilename": "/{{{ FRAMEWORK_FILENAME }}}",
+#if USE_THREADS
+		"workerFilename": "/{{{ WORKER_FILENAME }}}",
+#endif
+#if USE_WASM
+		"codeFilename": "/{{{ CODE_FILENAME }}}",
+#endif
+#if MEMORY_FILENAME
+		"memoryFilename": "/{{{ MEMORY_FILENAME }}}",
+#endif
+#if SYMBOLS_FILENAME
+		"symbolsFilename": "/{{{ SYMBOLS_FILENAME }}}",
+#endif
+		"companyName": "{{{ COMPANY_NAME }}}",
+		"productName": "{{{ PRODUCT_NAME }}}",
+		"productVersion": "{{{ PRODUCT_VERSION }}}"
+	}
+}
