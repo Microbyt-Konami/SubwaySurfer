@@ -2,8 +2,9 @@
 #if SHOW_DIAGNOSTICS
 	"showDiagnostics": true,
 #endif
+	"loaderFilename": "/{{{ LOADER_FILENAME }}}",
 #if BACKGROUND_FILENAME
-	"backGroundFilename": true,
+	"backGroundFilename": "/{{{ BACKGROUND_FILENAME",
 #endif
 	"width": {{{ WIDTH }}},
 	"height": {{{ HEIGHT }}},
@@ -17,7 +18,7 @@
 		"codeFilename": "/{{{ CODE_FILENAME }}}",
 #endif
 #if MEMORY_FILENAME
-		"memoryUrl": "/{{{ MEMORY_FILENAME }}}",
+		"memoryFilename": "/{{{ MEMORY_FILENAME }}}",
 #endif
 #if SYMBOLS_FILENAME
 		"symbolsFilename": "/{{{ SYMBOLS_FILENAME }}}",
