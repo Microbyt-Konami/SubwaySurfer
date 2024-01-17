@@ -8,8 +8,9 @@ public enum PlayerPosition { Left = -2, Middle = 0, Right = 2 }
 public class PlayerController : MonoBehaviour
 {
     // Fields
+    [SerializeField] private float fowardSpeed;
+    [SerializeField] private float jumpPower;
     [SerializeField] private float dodgeSpeed;
-    [SerializeField] private float jumpPower = 7;
 
     // Components
     private PlayerPosition playerPosition;
@@ -108,7 +109,7 @@ public class PlayerController : MonoBehaviour
 
     private void MovePlayer()
     {
-        motionVector = new Vector3(xPosition - playerTransform.position.x, yPosition * Time.deltaTime, 0);
+        motionVector = new Vector3(xPosition - playerTransform.position.x, yPosition * Time.deltaTime, fowardSpeed * Time.deltaTime);
         xPosition = Mathf.Lerp(xPosition, newXPosition, Time.deltaTime * dodgeSpeed);
         //playerTransform.position = new Vector3(xPosition, 0, 0);
         // cuidado es relativo no absoluto
