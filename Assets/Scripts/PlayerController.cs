@@ -11,6 +11,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float fowardSpeed;
     [SerializeField] private float jumpPower;
     [SerializeField] private float dodgeSpeed;
+    // Fields - Debug
+    [SerializeField] private bool isRolling;
+    [SerializeField] private bool isJumping;
+    [SerializeField] private bool isGrounded;
 
     // Components
     private PlayerPosition playerPosition;
@@ -22,7 +26,6 @@ public class PlayerController : MonoBehaviour
     private bool swipeLeft, swipeRight, swipeUp, swipeDown;
     private float newXPosition, xPosition, yPosition;
     private float rollTimer;
-    private bool isRolling, isJumping;
     private Vector3 motionVector;
 
     // Ids
@@ -51,6 +54,7 @@ public class PlayerController : MonoBehaviour
         MovePlayer();
         Jump();
         Roll();
+        isGrounded = characterController.isGrounded;
     }
 
     private void GetSwipe()
@@ -120,6 +124,7 @@ public class PlayerController : MonoBehaviour
     {
         if (characterController.isGrounded)
         {
+            isJumping = false;
             // 0 => corresponde al indice del layer por defecto es el 0
             if (playerAnimation.GetCurrentAnimatorStateInfo(0).IsName("Fall"))
                 SetPlayerAnimator(idLanding, false);
@@ -134,7 +139,6 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            isJumping = false;
             // Se baja mas rápido
             yPosition -= jumpPower * 2 * Time.deltaTime;
             // Si la velocidad en y <=0 es que esta cayendo
