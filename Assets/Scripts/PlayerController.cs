@@ -8,10 +8,12 @@ public enum PlayerPosition { Left = -2, Middle = 0, Right = 2 }
 public class PlayerController : MonoBehaviour
 {
     // Fields
+    [Header("Player Controller")]
     [SerializeField] private float fowardSpeed;
     [SerializeField] private float jumpPower;
     [SerializeField] private float dodgeSpeed;
     // Fields - Debug
+    [Header("Player States")]
     [SerializeField] private bool isRolling;
     [SerializeField] private bool isJumping;
     [SerializeField] private bool isGrounded;
@@ -128,7 +130,7 @@ public class PlayerController : MonoBehaviour
             // 0 => corresponde al indice del layer por defecto es el 0
             if (playerAnimation.GetCurrentAnimatorStateInfo(0).IsName("Fall"))
                 SetPlayerAnimator(idLanding, false);
-            if (swipeUp)
+            if (swipeUp && !isRolling)
             {
                 isJumping = true;
                 yPosition = jumpPower;
@@ -158,7 +160,7 @@ public class PlayerController : MonoBehaviour
             characterController.center = new Vector3(0, .45f, 0);
             characterController.height = .9f;
         }
-        if (swipeDown)
+        if (swipeDown && !isJumping)
         {
             isRolling = true;
             rollTimer = .5f;
