@@ -3,25 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PlayerPosition { Left = -2, Middle = 0, Right = 2 }
+public enum Side { Left = -2, Middle = 0, Right = 2 }
 
 public class PlayerController : MonoBehaviour
 {
     // Fields
+    [Header("Player Controller")]
+    [SerializeField] private float fowardSpeed;
+    [SerializeField] private float jumpPower;
     [SerializeField] private float dodgeSpeed;
-    [SerializeField] private float jumpPower = 7;
+    // Fields - Debug
+    [Header("Player States")]
+    [SerializeField] private bool isRolling;
+    [SerializeField] private bool isJumping;
+    [SerializeField] private bool isGrounded;
 
     // Components
-    private PlayerPosition playerPosition;
-    private Transform playerTransform;
-    private Animator playerAnimation;
-    private CharacterController characterController;
+    private Side position;
+    private Transform myTransform;
+    private Animator myAnimation;
+    private CharacterController myCharacterController;
 
     // Variables
     private bool swipeLeft, swipeRight, swipeUp, swipeDown;
     private float newXPosition, xPosition, yPosition;
     private float rollTimer;
-    private bool isRolling, isJumping;
     private Vector3 motionVector;
 
     // Ids
@@ -35,10 +41,10 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerPosition = PlayerPosition.Middle;
-        playerTransform = GetComponent<Transform>();
-        playerAnimation = GetComponent<Animator>();
-        characterController = GetComponent<CharacterController>();
+        position = Side.Middle;
+        myTransform = GetComponent<Transform>();
+        myAnimation = GetComponent<Animator>();
+        myCharacterController = GetComponent<CharacterController>();
         yPosition = -7;
     }
 
@@ -50,6 +56,7 @@ public class PlayerController : MonoBehaviour
         MovePlayer();
         Jump();
         Roll();
+        isGrounded = myCharacterController.isGrounded;
     }
 
     private void GetSwipe()
@@ -64,65 +71,66 @@ public class PlayerController : MonoBehaviour
     {
         if (swipeLeft && !isRolling)
         {
-            switch (playerPosition)
+            switch (position)
             {
-                case PlayerPosition.Middle:
-                    UpdatePlayerXPosition(PlayerPosition.Left);
+                case Side.Middle:
+                    UpdatePlayerXPosition(Side.Left);
                     SetPlayerAnimator(idDodgeLeft, false);
                     break;
-                case PlayerPosition.Right:
-                    UpdatePlayerXPosition(PlayerPosition.Middle);
+                case Side.Right:
+                    UpdatePlayerXPosition(Side.Middle);
                     SetPlayerAnimator(idDodgeLeft, false);
                     break;
             }
         }
         else if (swipeRight && !isRolling)
         {
-            switch (playerPosition)
+            switch (position)
             {
-                case PlayerPosition.Middle:
-                    UpdatePlayerXPosition(PlayerPosition.Right);
+                case Side.Middle:
+                    UpdatePlayerXPosition(Side.Right);
                     SetPlayerAnimator(idDodgeRight, false);
                     break;
-                case PlayerPosition.Left:
-                    UpdatePlayerXPosition(PlayerPosition.Middle);
+                case Side.Left:
+                    UpdatePlayerXPosition(Side.Middle);
                     SetPlayerAnimator(idDodgeRight, false);
                     break;
             }
         }
     }
 
-    private void UpdatePlayerXPosition(PlayerPosition position)
+    private void UpdatePlayerXPosition(Side position)
     {
         newXPosition = (int)position;
-        playerPosition = position;
+        this.position = position;
     }
 
     private void SetPlayerAnimator(int id, bool isCrossFade, float fadeTime = 0.1f)
     {
         if (isCrossFade)
-            playerAnimation.CrossFadeInFixedTime(id, fadeTime);
+            myAnimation.CrossFadeInFixedTime(id, fadeTime);
         else
-            playerAnimation.Play(id);
+            myAnimation.Play(id);
     }
 
     private void MovePlayer()
     {
-        motionVector = new Vector3(xPosition - playerTransform.position.x, yPosition * Time.deltaTime, 0);
+        motionVector = new Vector3(xPosition - myTransform.position.x, yPosition * Time.deltaTime, fowardSpeed * Time.deltaTime);
         xPosition = Mathf.Lerp(xPosition, newXPosition, Time.deltaTime * dodgeSpeed);
         //playerTransform.position = new Vector3(xPosition, 0, 0);
         // cuidado es relativo no absoluto
-        characterController.Move(motionVector);
+        myCharacterController.Move(motionVector);
     }
 
     private void Jump()
     {
-        if (characterController.isGrounded)
+        if (myCharacterController.isGrounded)
         {
+            isJumping = false;
             // 0 => corresponde al indice del layer por defecto es el 0
-            if (playerAnimation.GetCurrentAnimatorStateInfo(0).IsName("Fall"))
+            if (myAnimation.GetCurrentAnimatorStateInfo(0).IsName("Fall"))
                 SetPlayerAnimator(idLanding, false);
-            if (swipeUp)
+            if (swipeUp && !isRolling)
             {
                 isJumping = true;
                 yPosition = jumpPower;
@@ -133,11 +141,10 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            isJumping = false;
             // Se baja mas rápido
             yPosition -= jumpPower * 2 * Time.deltaTime;
             // Si la velocidad en y <=0 es que esta cayendo
-            if (characterController.velocity.y <= 0)
+            if (myCharacterController.velocity.y <= 0)
                 SetPlayerAnimator(idFall, false);
         }
     }
@@ -150,17 +157,17 @@ public class PlayerController : MonoBehaviour
             isRolling = false;
             rollTimer = 0;
             // Poner ch a tamaño normal
-            characterController.center = new Vector3(0, .45f, 0);
-            characterController.height = .9f;
+            myCharacterController.center = new Vector3(0, .45f, 0);
+            myCharacterController.height = .9f;
         }
-        if (swipeDown)
+        if (swipeDown && !isJumping)
         {
             isRolling = true;
             rollTimer = .5f;
             SetPlayerAnimator(idRoll, true);
             // Poner ch a tamaño chico
-            characterController.center = new Vector3(0, .2f, 0);
-            characterController.height = .4f;
+            myCharacterController.center = new Vector3(0, .2f, 0);
+            myCharacterController.height = .4f;
         }
     }
 }
