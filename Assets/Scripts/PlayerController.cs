@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     private Side position;
     private Transform myTransform;
     private Animator myAnimation;
-    private CharacterController myCharacterController;
+    private CharacterController _myCharacterController;
 
     // Variables
     private bool swipeLeft, swipeRight, swipeUp, swipeDown;
@@ -38,13 +38,15 @@ public class PlayerController : MonoBehaviour
     private int idLanding = Animator.StringToHash("Landing");
     private int idRoll = Animator.StringToHash("Roll");
 
+    public CharacterController MyCharacterController { get => _myCharacterController; set => _myCharacterController = value; }
+
     // Start is called before the first frame update
     void Start()
     {
         position = Side.Middle;
         myTransform = GetComponent<Transform>();
         myAnimation = GetComponent<Animator>();
-        myCharacterController = GetComponent<CharacterController>();
+        _myCharacterController = GetComponent<CharacterController>();
         yPosition = -7;
     }
 
@@ -56,7 +58,7 @@ public class PlayerController : MonoBehaviour
         MovePlayer();
         Jump();
         Roll();
-        isGrounded = myCharacterController.isGrounded;
+        isGrounded = _myCharacterController.isGrounded;
     }
 
     private void GetSwipe()
@@ -119,12 +121,12 @@ public class PlayerController : MonoBehaviour
         xPosition = Mathf.Lerp(xPosition, newXPosition, Time.deltaTime * dodgeSpeed);
         //playerTransform.position = new Vector3(xPosition, 0, 0);
         // cuidado es relativo no absoluto
-        myCharacterController.Move(motionVector);
+        _myCharacterController.Move(motionVector);
     }
 
     private void Jump()
     {
-        if (myCharacterController.isGrounded)
+        if (_myCharacterController.isGrounded)
         {
             isJumping = false;
             // 0 => corresponde al indice del layer por defecto es el 0
@@ -144,7 +146,7 @@ public class PlayerController : MonoBehaviour
             // Se baja mas rápido
             yPosition -= jumpPower * 2 * Time.deltaTime;
             // Si la velocidad en y <=0 es que esta cayendo
-            if (myCharacterController.velocity.y <= 0)
+            if (_myCharacterController.velocity.y <= 0)
                 SetPlayerAnimator(idFall, false);
         }
     }
@@ -157,8 +159,8 @@ public class PlayerController : MonoBehaviour
             isRolling = false;
             rollTimer = 0;
             // Poner ch a tamaño normal
-            myCharacterController.center = new Vector3(0, .45f, 0);
-            myCharacterController.height = .9f;
+            _myCharacterController.center = new Vector3(0, .45f, 0);
+            _myCharacterController.height = .9f;
         }
         if (swipeDown && !isJumping)
         {
@@ -166,8 +168,8 @@ public class PlayerController : MonoBehaviour
             rollTimer = .5f;
             SetPlayerAnimator(idRoll, true);
             // Poner ch a tamaño chico
-            myCharacterController.center = new Vector3(0, .2f, 0);
-            myCharacterController.height = .4f;
+            _myCharacterController.center = new Vector3(0, .2f, 0);
+            _myCharacterController.height = .4f;
         }
     }
 }
