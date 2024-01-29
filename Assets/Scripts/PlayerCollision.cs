@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CollisionX { Left, Middle, Right, None }
-public enum CollisionY { Up, Middle, Down, None }
-public enum CollisionZ { Forward, Middle, Backguard, None }
+public enum CollisionX { None, Left, Middle, Right }
+public enum CollisionY { None, Up, Middle, Down }
+public enum CollisionZ { None, Forward, Middle, Backward }
 
 public class PlayerCollision : MonoBehaviour
 {
     // Fields
-    [SerializeField] private CollisionX collisionX = CollisionX.None;
-    [SerializeField] private CollisionY collisionY = CollisionY.None;
-    [SerializeField] private CollisionZ collisionZ = CollisionZ.None;
+    [SerializeField] private CollisionX collisionX;
+    [SerializeField] private CollisionY collisionY;
+    [SerializeField] private CollisionZ collisionZ;
 
     // Componentes
     private PlayerController playerController;
@@ -112,7 +112,7 @@ public class PlayerCollision : MonoBehaviour
             (average > colliderBounds.size.z - fraccion)
                 ? CollisionZ.Forward
                 : (average < fraccion)
-                    ? CollisionZ.Backguard
+                    ? CollisionZ.Backward
                     : CollisionZ.Middle;
 
         return colZ;
