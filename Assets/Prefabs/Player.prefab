@@ -185,6 +185,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collisionX: 3
+  collisionY: 0
+  collisionZ: 0
 --- !u!1 &875091366484309209
 GameObject:
   m_ObjectHideFlags: 0
