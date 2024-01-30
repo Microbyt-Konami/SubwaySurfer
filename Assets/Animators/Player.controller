@@ -129,7 +129,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: death_movingTrain
+  m_Name: DeathMovingTrain
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -200,7 +200,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: stumbleSideRight
+  m_Name: StumbleSideRight
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -254,7 +254,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: death_lower
+  m_Name: DeathLower
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -374,7 +374,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: stumbleOffRight
+  m_Name: StumbleOffRight
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -574,7 +574,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: stumbleCornerRight
+  m_Name: StumbleCornerRight
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -663,7 +663,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: death_bounce
+  m_Name: DeathBounce
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -734,7 +734,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: death_upper
+  m_Name: DeathUpper
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -783,7 +783,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: stumbleSideLeft
+  m_Name: StumbleSideLeft
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -832,7 +832,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: stumbleOffLeft
+  m_Name: StumbleOffLeft
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -859,7 +859,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: stumble_low
+  m_Name: StumbleLow
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -908,7 +908,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: stumbleFall
+  m_Name: StumbleFall
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1029,7 +1029,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: stumbleCornerLeft
+  m_Name: StumbleCornerLeft
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:

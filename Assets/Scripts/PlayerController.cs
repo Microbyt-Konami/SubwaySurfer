@@ -37,8 +37,28 @@ public class PlayerController : MonoBehaviour
     private int idFall = Animator.StringToHash("Fall");
     private int idLanding = Animator.StringToHash("Landing");
     private int idRoll = Animator.StringToHash("Roll");
+    private int idStumbleLow = Animator.StringToHash("StumbleLow");
+    private int idStumbleCornerLeft = Animator.StringToHash("StumbleCornerLeft");
+    private int idStumbleCornerRight = Animator.StringToHash("StumbleCornerRight");
+    private int idStumbleFall = Animator.StringToHash("StumbleFall");
+    private int idStumbleOffLeft = Animator.StringToHash("StumbleOffLeft");
+    private int idStumbleOffRight = Animator.StringToHash("StumbleOffRight");
+    private int idStumbleSideLeft = Animator.StringToHash("StumbleSideLeftl");
+    private int idStumbleSideRight = Animator.StringToHash("StumbleSideRight");
+    private int idDeathBounce = Animator.StringToHash("DeathBounce");
+    private int idDeathLower = Animator.StringToHash("DeathLower");
+    private int idDeathMovingTrain = Animator.StringToHash("DeathMovingTrain");
+    private int idDeathUpper = Animator.StringToHash("DeathUpper");
 
     public CharacterController MyCharacterController { get => _myCharacterController; set => _myCharacterController = value; }
+
+    public void SetPlayerAnimator(int id, bool isCrossFade, float fadeTime = 0.1f)
+    {
+        if (isCrossFade)
+            myAnimation.CrossFadeInFixedTime(id, fadeTime);
+        else
+            myAnimation.Play(id);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -105,14 +125,6 @@ public class PlayerController : MonoBehaviour
     {
         newXPosition = (int)position;
         this.position = position;
-    }
-
-    private void SetPlayerAnimator(int id, bool isCrossFade, float fadeTime = 0.1f)
-    {
-        if (isCrossFade)
-            myAnimation.CrossFadeInFixedTime(id, fadeTime);
-        else
-            myAnimation.Play(id);
     }
 
     private void MovePlayer()
