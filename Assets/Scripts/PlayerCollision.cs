@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public enum CollisionX { None, Left, Middle, Right }
-public enum CollisionY { None, Up, Middle, Down }
+public enum CollisionY { None, Up, Middle, Down, LowDown }
 public enum CollisionZ { None, Forward, Middle, Backward }
 
 public class PlayerCollision : MonoBehaviour
@@ -21,6 +22,18 @@ public class PlayerCollision : MonoBehaviour
         collisionX = CalcCollisionX(collider);
         collisionY = CalcCollisionY(collider);
         collisionZ = CalcCollisionZ(collider);
+        SetAnimatorByColission();
+    }
+
+    private void SetAnimatorByColission()
+    {
+        if (collisionZ == CollisionZ.Backward && collisionX == CollisionX.Middle)
+        {
+            if (collisionY == CollisionY.LowDown)
+            {
+                playerController.SetPlayerAnimator(playerController.IdStumbleLow, false);
+            }
+        }
     }
 
     private void Awake()
@@ -77,11 +90,14 @@ public class PlayerCollision : MonoBehaviour
 
         // Como lo divimos en tres partes 1/3=0.33
         const float fraccion = 1.0f / 3.0f;
+        const float fraccionMidle = fraccion / 2.0f;
 
         CollisionY colY =
             (average > colliderBounds.size.y - fraccion)
                 ? CollisionY.Up
-                : (average < fraccion)
+                : (average < fraccionMidle)
+                    ? CollisionY.LowDown
+                    : (average < fraccion)
                     ? CollisionY.Down
                     : CollisionY.Middle;
 
