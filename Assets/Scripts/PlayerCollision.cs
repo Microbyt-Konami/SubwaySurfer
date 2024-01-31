@@ -22,10 +22,10 @@ public class PlayerCollision : MonoBehaviour
         collisionX = CalcCollisionX(collider);
         collisionY = CalcCollisionY(collider);
         collisionZ = CalcCollisionZ(collider);
-        SetAnimatorByColission();
+        SetAnimatorByColission(collider);
     }
 
-    private void SetAnimatorByColission()
+    private void SetAnimatorByColission(Collider collider)
     {
         if (collisionZ == CollisionZ.Backward && collisionX == CollisionX.Middle)
         {
@@ -36,6 +36,17 @@ public class PlayerCollision : MonoBehaviour
             else if (collisionY == CollisionY.Down)
             {
                 playerController.SetPlayerAnimator(playerController.IdDeathLower, false);
+            }
+            else if (collisionY == CollisionY.Middle)
+            {
+                if (collider.CompareTag("TrainOn"))
+                {
+                    playerController.SetPlayerAnimator(playerController.IdDeathMovingTrain, false);
+                }
+                else
+                {
+                    playerController.SetPlayerAnimator(playerController.IdDeathBounce, false);
+                }
             }
         }
     }
