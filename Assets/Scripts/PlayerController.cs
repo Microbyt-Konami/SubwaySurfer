@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
 
     public CharacterController MyCharacterController { get => _myCharacterController; set => _myCharacterController = value; }
     public int IdStumbleLow { get => idStumbleLow; set => idStumbleLow = value; }
+    public int IdDeathLower { get => idDeathLower; set => idDeathLower = value; }
 
     public void SetPlayerAnimator(int id, bool isCrossFade, float fadeTime = 0.1f)
     {

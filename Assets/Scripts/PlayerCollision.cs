@@ -33,6 +33,10 @@ public class PlayerCollision : MonoBehaviour
             {
                 playerController.SetPlayerAnimator(playerController.IdStumbleLow, false);
             }
+            else if (collisionY == CollisionY.Down)
+            {
+                playerController.SetPlayerAnimator(playerController.IdDeathLower, false);
+            }
         }
     }
 
