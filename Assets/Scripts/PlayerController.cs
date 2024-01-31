@@ -55,6 +55,8 @@ public class PlayerController : MonoBehaviour
     public int IdDeathLower { get => idDeathLower; set => idDeathLower = value; }
     public int IdDeathMovingTrain { get => idDeathMovingTrain; set => idDeathMovingTrain = value; }
     public int IdDeathBounce { get => idDeathBounce; set => idDeathBounce = value; }
+    public int IdDeathUpper { get => idDeathUpper; set => idDeathUpper = value; }
+    public bool IsRolling { get => isRolling; set => isRolling = value; }
 
     public void SetPlayerAnimator(int id, bool isCrossFade, float fadeTime = 0.1f)
     {

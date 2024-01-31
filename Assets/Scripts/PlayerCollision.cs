@@ -48,6 +48,10 @@ public class PlayerCollision : MonoBehaviour
                     playerController.SetPlayerAnimator(playerController.IdDeathBounce, false);
                 }
             }
+            else if (collisionY == CollisionY.Up && !playerController.IsRolling)
+            {
+                playerController.SetPlayerAnimator(playerController.IdDeathUpper, false);
+            }
         }
     }
 
