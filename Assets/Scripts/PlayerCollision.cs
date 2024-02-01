@@ -40,21 +40,25 @@ public class PlayerCollision : MonoBehaviour
             else if (_collisionY == CollisionY.Down)
             {
                 playerController.SetPlayerAnimator(playerController.IdDeathLower, false);
+                print("Dead Lower");
             }
             else if (_collisionY == CollisionY.Middle)
             {
                 if (collider.CompareTag("TrainOn"))
                 {
                     playerController.SetPlayerAnimator(playerController.IdDeathMovingTrain, false);
+                    print("Dead MovingTrain");
                 }
-                else
+                else if (!collider.CompareTag("Ramp"))
                 {
                     playerController.SetPlayerAnimator(playerController.IdDeathBounce, false);
+                    print("Dead Bounce");
                 }
             }
             else if (_collisionY == CollisionY.Up && !playerController.IsRolling)
             {
                 playerController.SetPlayerAnimator(playerController.IdDeathUpper, false);
+                print("Dead Upper");
             }
         }
         else if (_collisionZ == CollisionZ.Middle)
