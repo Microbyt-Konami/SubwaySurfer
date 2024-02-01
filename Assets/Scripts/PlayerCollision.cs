@@ -53,6 +53,28 @@ public class PlayerCollision : MonoBehaviour
                 playerController.SetPlayerAnimator(playerController.IdDeathUpper, false);
             }
         }
+        else if (collisionZ == CollisionZ.Middle)
+        {
+            if (collisionX == CollisionX.Right)
+            {
+                playerController.SetPlayerAnimator(playerController.IdStumbleSideRight, false);
+            }
+            else if (collisionX == CollisionX.Left)
+            {
+                playerController.SetPlayerAnimator(playerController.IdStumbleSideLeft, false);
+            }
+        }
+        else
+        {
+            if (collisionX == CollisionX.Right)
+            {
+                playerController.SetPlayerAnimator(playerController.IdStumbleCornerRight, false);
+            }
+            else if (collisionX == CollisionX.Left)
+            {
+                playerController.SetPlayerAnimator(playerController.IdStumbleCornerLeft, false);
+            }
+        }
     }
 
     private void Awake()

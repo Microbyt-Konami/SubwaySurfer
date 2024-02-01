@@ -57,6 +57,10 @@ public class PlayerController : MonoBehaviour
     public int IdDeathBounce { get => idDeathBounce; set => idDeathBounce = value; }
     public int IdDeathUpper { get => idDeathUpper; set => idDeathUpper = value; }
     public bool IsRolling { get => isRolling; set => isRolling = value; }
+    public int IdStumbleCornerLeft { get => idStumbleCornerLeft; set => idStumbleCornerLeft = value; }
+    public int IdStumbleCornerRight { get => idStumbleCornerRight; set => idStumbleCornerRight = value; }
+    public int IdStumbleSideLeft { get => idStumbleSideLeft; set => idStumbleSideLeft = value; }
+    public int IdStumbleSideRight { get => idStumbleSideRight; set => idStumbleSideRight = value; }
 
     public void SetPlayerAnimator(int id, bool isCrossFade, float fadeTime = 0.1f)
     {
