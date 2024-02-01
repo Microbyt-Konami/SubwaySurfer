@@ -10,34 +10,38 @@ public enum CollisionZ { None, Forward, Middle, Backward }
 public class PlayerCollision : MonoBehaviour
 {
     // Fields
-    [SerializeField] private CollisionX collisionX;
-    [SerializeField] private CollisionY collisionY;
-    [SerializeField] private CollisionZ collisionZ;
+    private CollisionX _collisionX;
+    private CollisionY _collisionY;
+    private CollisionZ _collisionZ;
 
     // Componentes
     private PlayerController playerController;
 
+    public CollisionX CollisionX { get => _collisionX; set => _collisionX = value; }
+    public CollisionY CollisionY { get => _collisionY; set => _collisionY = value; }
+    public CollisionZ CollisionZ { get => _collisionZ; set => _collisionZ = value; }
+
     public void OnCharacterColission(Collider collider)
     {
-        collisionX = CalcCollisionX(collider);
-        collisionY = CalcCollisionY(collider);
-        collisionZ = CalcCollisionZ(collider);
+        _collisionX = CalcCollisionX(collider);
+        _collisionY = CalcCollisionY(collider);
+        _collisionZ = CalcCollisionZ(collider);
         SetAnimatorByColission(collider);
     }
 
     private void SetAnimatorByColission(Collider collider)
     {
-        if (collisionZ == CollisionZ.Backward && collisionX == CollisionX.Middle)
+        if (_collisionZ == CollisionZ.Backward && _collisionX == CollisionX.Middle)
         {
-            if (collisionY == CollisionY.LowDown)
+            if (_collisionY == CollisionY.LowDown)
             {
                 playerController.SetPlayerAnimator(playerController.IdStumbleLow, false);
             }
-            else if (collisionY == CollisionY.Down)
+            else if (_collisionY == CollisionY.Down)
             {
                 playerController.SetPlayerAnimator(playerController.IdDeathLower, false);
             }
-            else if (collisionY == CollisionY.Middle)
+            else if (_collisionY == CollisionY.Middle)
             {
                 if (collider.CompareTag("TrainOn"))
                 {
@@ -48,29 +52,29 @@ public class PlayerCollision : MonoBehaviour
                     playerController.SetPlayerAnimator(playerController.IdDeathBounce, false);
                 }
             }
-            else if (collisionY == CollisionY.Up && !playerController.IsRolling)
+            else if (_collisionY == CollisionY.Up && !playerController.IsRolling)
             {
                 playerController.SetPlayerAnimator(playerController.IdDeathUpper, false);
             }
         }
-        else if (collisionZ == CollisionZ.Middle)
+        else if (_collisionZ == CollisionZ.Middle)
         {
-            if (collisionX == CollisionX.Right)
+            if (_collisionX == CollisionX.Right)
             {
                 playerController.SetPlayerAnimator(playerController.IdStumbleSideRight, false);
             }
-            else if (collisionX == CollisionX.Left)
+            else if (_collisionX == CollisionX.Left)
             {
                 playerController.SetPlayerAnimator(playerController.IdStumbleSideLeft, false);
             }
         }
         else
         {
-            if (collisionX == CollisionX.Right)
+            if (_collisionX == CollisionX.Right)
             {
                 playerController.SetPlayerAnimator(playerController.IdStumbleCornerRight, false);
             }
-            else if (collisionX == CollisionX.Left)
+            else if (_collisionX == CollisionX.Left)
             {
                 playerController.SetPlayerAnimator(playerController.IdStumbleCornerLeft, false);
             }

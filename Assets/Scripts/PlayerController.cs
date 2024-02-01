@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     private Transform myTransform;
     private Animator myAnimation;
     private CharacterController _myCharacterController;
+    private PlayerCollision playerCollision;
 
     // Variables
     private bool swipeLeft, swipeRight, swipeUp, swipeDown;
@@ -68,6 +69,7 @@ public class PlayerController : MonoBehaviour
             myAnimation.CrossFadeInFixedTime(id, fadeTime);
         else
             myAnimation.Play(id);
+        ResetCollision();
     }
 
     // Start is called before the first frame update
@@ -77,6 +79,7 @@ public class PlayerController : MonoBehaviour
         myTransform = GetComponent<Transform>();
         myAnimation = GetComponent<Animator>();
         _myCharacterController = GetComponent<CharacterController>();
+        playerCollision = GetComponent<PlayerCollision>();
         yPosition = -7;
     }
 
@@ -97,6 +100,14 @@ public class PlayerController : MonoBehaviour
         swipeRight = Input.GetKeyDown(KeyCode.RightArrow);
         swipeUp = Input.GetKeyDown(KeyCode.UpArrow);
         swipeDown = Input.GetKeyDown(KeyCode.DownArrow);
+    }
+
+    private void ResetCollision()
+    {
+        print($"{playerCollision.CollisionX} {playerCollision.CollisionY} {playerCollision.CollisionZ}");
+        playerCollision.CollisionX = CollisionX.None;
+        playerCollision.CollisionY = CollisionY.None;
+        playerCollision.CollisionZ = CollisionZ.None;
     }
 
     private void SetPlayerPosition()
