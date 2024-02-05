@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     private Transform myTransform;
     private Animator myAnimation;
     private CharacterController _myCharacterController;
+    private PlayerCollision playerCollision;
 
     // Variables
     private bool swipeLeft, swipeRight, swipeUp, swipeDown;
@@ -37,8 +38,49 @@ public class PlayerController : MonoBehaviour
     private int idFall = Animator.StringToHash("Fall");
     private int idLanding = Animator.StringToHash("Landing");
     private int idRoll = Animator.StringToHash("Roll");
+    private int idStumbleLow = Animator.StringToHash("StumbleLow");
+    private int idStumbleCornerLeft = Animator.StringToHash("StumbleCornerLeft");
+    private int idStumbleCornerRight = Animator.StringToHash("StumbleCornerRight");
+    private int idStumbleFall = Animator.StringToHash("StumbleFall");
+    private int idStumbleOffLeft = Animator.StringToHash("StumbleOffLeft");
+    private int idStumbleOffRight = Animator.StringToHash("StumbleOffRight");
+    private int idStumbleSideLeft = Animator.StringToHash("StumbleSideLeftl");
+    private int idStumbleSideRight = Animator.StringToHash("StumbleSideRight");
+    private int idDeathBounce = Animator.StringToHash("DeathBounce");
+    private int idDeathLower = Animator.StringToHash("DeathLower");
+    private int idDeathMovingTrain = Animator.StringToHash("DeathMovingTrain");
+    private int idDeathUpper = Animator.StringToHash("DeathUpper");
 
     public CharacterController MyCharacterController { get => _myCharacterController; set => _myCharacterController = value; }
+    public int IdStumbleLow { get => idStumbleLow; set => idStumbleLow = value; }
+    public int IdDeathLower { get => idDeathLower; set => idDeathLower = value; }
+    public int IdDeathMovingTrain { get => idDeathMovingTrain; set => idDeathMovingTrain = value; }
+    public int IdDeathBounce { get => idDeathBounce; set => idDeathBounce = value; }
+    public int IdDeathUpper { get => idDeathUpper; set => idDeathUpper = value; }
+    public bool IsRolling { get => isRolling; set => isRolling = value; }
+    public int IdStumbleCornerLeft { get => idStumbleCornerLeft; set => idStumbleCornerLeft = value; }
+    public int IdStumbleCornerRight { get => idStumbleCornerRight; set => idStumbleCornerRight = value; }
+    public int IdStumbleSideLeft { get => idStumbleSideLeft; set => idStumbleSideLeft = value; }
+    public int IdStumbleSideRight { get => idStumbleSideRight; set => idStumbleSideRight = value; }
+
+    public void SetPlayerAnimator(int id, bool isCrossFade, float fadeTime = 0.1f)
+    {
+        // 0=> Base Layer
+        myAnimation.SetLayerWeight(0, 1);
+        if (isCrossFade)
+            myAnimation.CrossFadeInFixedTime(id, fadeTime);
+        else
+            myAnimation.Play(id);
+        ResetCollision();
+    }
+
+    public void SetPlayerAnimatorWithLayer(int id)
+    {
+        // 1=> Layer StumbleCorner
+        myAnimation.SetLayerWeight(1, 1);
+        myAnimation.Play(id);
+        ResetCollision();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -47,6 +89,7 @@ public class PlayerController : MonoBehaviour
         myTransform = GetComponent<Transform>();
         myAnimation = GetComponent<Animator>();
         _myCharacterController = GetComponent<CharacterController>();
+        playerCollision = GetComponent<PlayerCollision>();
         yPosition = -7;
     }
 
@@ -67,6 +110,14 @@ public class PlayerController : MonoBehaviour
         swipeRight = Input.GetKeyDown(KeyCode.RightArrow);
         swipeUp = Input.GetKeyDown(KeyCode.UpArrow);
         swipeDown = Input.GetKeyDown(KeyCode.DownArrow);
+    }
+
+    private void ResetCollision()
+    {
+        print($"{playerCollision.CollisionX} {playerCollision.CollisionY} {playerCollision.CollisionZ}");
+        playerCollision.CollisionX = CollisionX.None;
+        playerCollision.CollisionY = CollisionY.None;
+        playerCollision.CollisionZ = CollisionZ.None;
     }
 
     private void SetPlayerPosition()
@@ -105,14 +156,6 @@ public class PlayerController : MonoBehaviour
     {
         newXPosition = (int)position;
         this.position = position;
-    }
-
-    private void SetPlayerAnimator(int id, bool isCrossFade, float fadeTime = 0.1f)
-    {
-        if (isCrossFade)
-            myAnimation.CrossFadeInFixedTime(id, fadeTime);
-        else
-            myAnimation.Play(id);
     }
 
     private void MovePlayer()

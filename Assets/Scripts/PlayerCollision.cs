@@ -1,26 +1,89 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public enum CollisionX { None, Left, Middle, Right }
-public enum CollisionY { None, Up, Middle, Down }
+public enum CollisionY { None, Up, Middle, Down, LowDown }
 public enum CollisionZ { None, Forward, Middle, Backward }
 
 public class PlayerCollision : MonoBehaviour
 {
     // Fields
-    [SerializeField] private CollisionX collisionX;
-    [SerializeField] private CollisionY collisionY;
-    [SerializeField] private CollisionZ collisionZ;
+    private CollisionX _collisionX;
+    private CollisionY _collisionY;
+    private CollisionZ _collisionZ;
 
     // Componentes
     private PlayerController playerController;
 
+    public CollisionX CollisionX { get => _collisionX; set => _collisionX = value; }
+    public CollisionY CollisionY { get => _collisionY; set => _collisionY = value; }
+    public CollisionZ CollisionZ { get => _collisionZ; set => _collisionZ = value; }
+
     public void OnCharacterColission(Collider collider)
     {
-        collisionX = CalcCollisionX(collider);
-        collisionY = CalcCollisionY(collider);
-        collisionZ = CalcCollisionZ(collider);
+        _collisionX = CalcCollisionX(collider);
+        _collisionY = CalcCollisionY(collider);
+        _collisionZ = CalcCollisionZ(collider);
+        SetAnimatorByColission(collider);
+    }
+
+    private void SetAnimatorByColission(Collider collider)
+    {
+        if (_collisionZ == CollisionZ.Backward && _collisionX == CollisionX.Middle)
+        {
+            if (_collisionY == CollisionY.LowDown)
+            {
+                collider.enabled = false;
+                playerController.SetPlayerAnimator(playerController.IdStumbleLow, false);
+            }
+            else if (_collisionY == CollisionY.Down)
+            {
+                playerController.SetPlayerAnimator(playerController.IdDeathLower, false);
+                print("Dead Lower");
+            }
+            else if (_collisionY == CollisionY.Middle)
+            {
+                if (collider.CompareTag("TrainOn"))
+                {
+                    playerController.SetPlayerAnimator(playerController.IdDeathMovingTrain, false);
+                    print("Dead MovingTrain");
+                }
+                else if (!collider.CompareTag("Ramp"))
+                {
+                    playerController.SetPlayerAnimator(playerController.IdDeathBounce, false);
+                    print("Dead Bounce");
+                }
+            }
+            else if (_collisionY == CollisionY.Up && !playerController.IsRolling)
+            {
+                playerController.SetPlayerAnimator(playerController.IdDeathUpper, false);
+                print("Dead Upper");
+            }
+        }
+        else if (_collisionZ == CollisionZ.Middle)
+        {
+            if (_collisionX == CollisionX.Right)
+            {
+                playerController.SetPlayerAnimator(playerController.IdStumbleSideRight, false);
+            }
+            else if (_collisionX == CollisionX.Left)
+            {
+                playerController.SetPlayerAnimator(playerController.IdStumbleSideLeft, false);
+            }
+        }
+        else
+        {
+            if (_collisionX == CollisionX.Right)
+            {
+                playerController.SetPlayerAnimatorWithLayer(playerController.IdStumbleCornerRight);
+            }
+            else if (_collisionX == CollisionX.Left)
+            {
+                playerController.SetPlayerAnimatorWithLayer(playerController.IdStumbleCornerLeft);
+            }
+        }
     }
 
     private void Awake()
@@ -77,11 +140,14 @@ public class PlayerCollision : MonoBehaviour
 
         // Como lo divimos en tres partes 1/3=0.33
         const float fraccion = 1.0f / 3.0f;
+        const float fraccionMidle = fraccion / 2.0f;
 
         CollisionY colY =
             (average > colliderBounds.size.y - fraccion)
                 ? CollisionY.Up
-                : (average < fraccion)
+                : (average < fraccionMidle)
+                    ? CollisionY.LowDown
+                    : (average < fraccion)
                     ? CollisionY.Down
                     : CollisionY.Middle;
 

@@ -150,7 +150,7 @@ CharacterController:
   m_Height: 0.9
   m_Radius: 0.2
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.45, z: 0}
@@ -184,7 +184,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d43ed49c2c5d3c48a1b4d6c4d53b590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionX: 3
 --- !u!1 &875091366484309209
 GameObject:
   m_ObjectHideFlags: 0
@@ -692,10 +691,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.24
-  m_Height: 0.8
+  m_Radius: 0.34
+  m_Height: 0.92
   m_Direction: 1
-  m_Center: {x: 0, y: 0.47, z: 0}
+  m_Center: {x: 0, y: 0.5, z: 0.2}
 --- !u!54 &1192387924253821673
 Rigidbody:
   m_ObjectHideFlags: 0
