@@ -35,6 +35,7 @@ public class PlayerCollision : MonoBehaviour
         {
             if (_collisionY == CollisionY.LowDown)
             {
+                collider.enabled = false;
                 playerController.SetPlayerAnimator(playerController.IdStumbleLow, false);
             }
             else if (_collisionY == CollisionY.Down)
