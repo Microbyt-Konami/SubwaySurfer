@@ -65,10 +65,20 @@ public class PlayerController : MonoBehaviour
 
     public void SetPlayerAnimator(int id, bool isCrossFade, float fadeTime = 0.1f)
     {
+        // 0=> Base Layer
+        myAnimation.SetLayerWeight(0, 1);
         if (isCrossFade)
             myAnimation.CrossFadeInFixedTime(id, fadeTime);
         else
             myAnimation.Play(id);
+        ResetCollision();
+    }
+
+    public void SetPlayerAnimatorWithLayer(int id)
+    {
+        // 1=> Layer StumbleCorner
+        myAnimation.SetLayerWeight(1, 1);
+        myAnimation.Play(id);
         ResetCollision();
     }
 

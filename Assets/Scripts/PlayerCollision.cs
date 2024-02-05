@@ -77,11 +77,11 @@ public class PlayerCollision : MonoBehaviour
         {
             if (_collisionX == CollisionX.Right)
             {
-                playerController.SetPlayerAnimator(playerController.IdStumbleCornerRight, false);
+                playerController.SetPlayerAnimatorWithLayer(playerController.IdStumbleCornerRight);
             }
             else if (_collisionX == CollisionX.Left)
             {
-                playerController.SetPlayerAnimator(playerController.IdStumbleCornerLeft, false);
+                playerController.SetPlayerAnimatorWithLayer(playerController.IdStumbleCornerLeft);
             }
         }
     }
