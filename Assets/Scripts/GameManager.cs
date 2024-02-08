@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        playerController.NoMove = true;
         isGameObject = true;
     }
 
@@ -31,7 +32,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         playerController = GameManager.FindFirstObjectByType<PlayerController>();
-        playerController.enabled = false;
         StartCoroutine(DoCountDown());
     }
 
@@ -43,13 +43,14 @@ public class GameManager : MonoBehaviour
 
     IEnumerator DoCountDown()
     {
+        playerController.NoMove = true;
         isCountDown = true;
         for (secondCountDown = 3; secondCountDown >= 1; secondCountDown--)
         {
             yield return new WaitForSecondsRealtime(1);
         }
-        playerController.enabled = true;
         isCountDown = false;
+        playerController.NoMove = false;
     }
 
     private void OnGUI()
