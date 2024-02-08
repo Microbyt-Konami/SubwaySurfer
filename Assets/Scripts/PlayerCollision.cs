@@ -42,6 +42,7 @@ public class PlayerCollision : MonoBehaviour
             {
                 playerController.SetPlayerAnimator(playerController.IdDeathLower, false);
                 print("Dead Lower");
+                GameManager.Instance.GameOver();
             }
             else if (_collisionY == CollisionY.Middle)
             {
@@ -49,17 +50,20 @@ public class PlayerCollision : MonoBehaviour
                 {
                     playerController.SetPlayerAnimator(playerController.IdDeathMovingTrain, false);
                     print("Dead MovingTrain");
+                    GameManager.Instance.GameOver();
                 }
                 else if (!collider.CompareTag("Ramp"))
                 {
                     playerController.SetPlayerAnimator(playerController.IdDeathBounce, false);
                     print("Dead Bounce");
+                    GameManager.Instance.GameOver();
                 }
             }
             else if (_collisionY == CollisionY.Up && !playerController.IsRolling)
             {
                 playerController.SetPlayerAnimator(playerController.IdDeathUpper, false);
                 print("Dead Upper");
+                GameManager.Instance.GameOver();
             }
         }
         else if (_collisionZ == CollisionZ.Middle)
