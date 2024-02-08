@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float dodgeSpeed;
     // Fields - Debug
     [Header("Player States")]
+    [SerializeField] private bool noMove;
     [SerializeField] private bool isRolling;
     [SerializeField] private bool isJumping;
     [SerializeField] private bool isGrounded;
@@ -62,6 +63,7 @@ public class PlayerController : MonoBehaviour
     public int IdStumbleCornerRight { get => idStumbleCornerRight; set => idStumbleCornerRight = value; }
     public int IdStumbleSideLeft { get => idStumbleSideLeft; set => idStumbleSideLeft = value; }
     public int IdStumbleSideRight { get => idStumbleSideRight; set => idStumbleSideRight = value; }
+    public bool NoMove { get => noMove; set => noMove = value; }
 
     public void SetPlayerAnimator(int id, bool isCrossFade, float fadeTime = 0.1f)
     {
@@ -96,11 +98,14 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GetSwipe();
-        SetPlayerPosition();
-        MovePlayer();
-        Jump();
-        Roll();
+        if (!NoMove)
+        {
+            GetSwipe();
+            SetPlayerPosition();
+            MovePlayer();
+            Jump();
+            Roll();
+        }
         isGrounded = _myCharacterController.isGrounded;
     }
 
