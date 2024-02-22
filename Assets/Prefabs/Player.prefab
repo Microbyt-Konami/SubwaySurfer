@@ -166,9 +166,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59b8762e985e994fbd59dfd46b9956b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fowardSpeed: 10
+  fowardSpeed: 6
   jumpPower: 10
   dodgeSpeed: 8
+  noMove: 0
   isRolling: 0
   isJumping: 0
   isGrounded: 0
