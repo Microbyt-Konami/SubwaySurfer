@@ -1,2 +1,2 @@
 # SubwaySurfer
-Game Subway Surfer
+Game Subway Surfer.
