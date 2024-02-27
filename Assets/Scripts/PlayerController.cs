@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviour
     public int IdStumbleSideLeft { get => idStumbleSideLeft; set => idStumbleSideLeft = value; }
     public int IdStumbleSideRight { get => idStumbleSideRight; set => idStumbleSideRight = value; }
     public bool NoMove { get => noMove; set => noMove = value; }
+    public Vector3 Position => myTransform.position;
 
     public void SetPlayerAnimator(int id, bool isCrossFade, float fadeTime = 0.1f)
     {
@@ -82,6 +83,13 @@ public class PlayerController : MonoBehaviour
         myAnimation.SetLayerWeight(1, 1);
         myAnimation.Play(id);
         ResetCollision();
+    }
+
+    public void ResetPositionZ()
+    {
+        var position = Position;
+
+        _myCharacterController.Move(new Vector3(position.x, position.y, 0));
     }
 
     // Start is called before the first frame update
@@ -184,14 +192,14 @@ public class PlayerController : MonoBehaviour
             {
                 isJumping = true;
                 yPosition = jumpPower;
-                // Mezcla la animación actual con la de jump
+                // Mezcla la animaciï¿½n actual con la de jump
                 //playerAnimation.CrossFadeInFixedTime(idJump, 0.1f);
                 SetPlayerAnimator(idJump, true, 1f);
             }
         }
         else
         {
-            // Se baja mas rápido
+            // Se baja mas rï¿½pido
             yPosition -= jumpPower * 2 * Time.deltaTime;
             // Si la velocidad en y <=0 es que esta cayendo
             if (_myCharacterController.velocity.y <= 0)
@@ -206,7 +214,7 @@ public class PlayerController : MonoBehaviour
         {
             isRolling = false;
             rollTimer = 0;
-            // Poner ch a tamaño normal
+            // Poner ch a tamaï¿½o normal
             _myCharacterController.center = new Vector3(0, .45f, 0);
             _myCharacterController.height = .9f;
         }
@@ -215,7 +223,7 @@ public class PlayerController : MonoBehaviour
             isRolling = true;
             rollTimer = .5f;
             SetPlayerAnimator(idRoll, true);
-            // Poner ch a tamaño chico
+            // Poner ch a tamaï¿½o chico
             _myCharacterController.center = new Vector3(0, .2f, 0);
             _myCharacterController.height = .4f;
         }
