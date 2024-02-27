@@ -87,9 +87,8 @@ public class PlayerController : MonoBehaviour
 
     public void ResetPositionZ()
     {
-        var position = Position;
-
-        _myCharacterController.Move(new Vector3(position.x, position.y, 0));
+        motionVector = new Vector3(0, 0, -myTransform.position.z);
+        _myCharacterController.Move(motionVector);
     }
 
     // Start is called before the first frame update
