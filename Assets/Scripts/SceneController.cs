@@ -5,7 +5,8 @@ using UnityEngine;
 public class SceneController : MonoBehaviour
 {
     // Fields
-    [SerializeField] private float positionXEnd;
+    [SerializeField] private float positionZEnd;
+    [SerializeField] private float positionZToChange;
     // Components
     private PlayerController playerController;
 
@@ -18,8 +19,7 @@ public class SceneController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Cuando el Player llegue a la posición 2000 de Z deberá volver a la posición 0 de Z para poder seguir recorriendo el nivel desde el inicio. El cambio de posición del Player con respecto al nivel no debe tener ningún salto visual.
-        if (playerController.Position.z >= positionXEnd)
-            playerController.ResetPositionZ();
+        if (playerController.Position.z >= positionZEnd)
+            playerController.SetPlayerPositionZ(playerController.Position.z - positionZEnd + positionZToChange);
     }
 }

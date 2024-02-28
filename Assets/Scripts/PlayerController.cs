@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     // Variables
     private bool swipeLeft, swipeRight, swipeUp, swipeDown;
     private float newXPosition, xPosition, yPosition;
+    private float? newZPosition;
     private float rollTimer;
     private Vector3 motionVector;
 
@@ -85,10 +86,9 @@ public class PlayerController : MonoBehaviour
         ResetCollision();
     }
 
-    public void ResetPositionZ()
+    public void SetPlayerPositionZ(float positionZ)
     {
-        motionVector = new Vector3(0, 0, -myTransform.position.z);
-        _myCharacterController.Move(motionVector);
+        newZPosition = positionZ;
     }
 
     // Start is called before the first frame update
@@ -114,6 +114,15 @@ public class PlayerController : MonoBehaviour
             Roll();
         }
         isGrounded = _myCharacterController.isGrounded;
+    }
+
+    void LateUpdate()
+    {
+        if (newZPosition.HasValue)
+        {
+            myTransform.position = new Vector3(myTransform.position.x, myTransform.position.y, newZPosition.Value);
+            newZPosition = null;
+        }
     }
 
     private void GetSwipe()
@@ -177,6 +186,8 @@ public class PlayerController : MonoBehaviour
         //playerTransform.position = new Vector3(xPosition, 0, 0);
         // cuidado es relativo no absoluto
         _myCharacterController.Move(motionVector);
+        if (newZPosition.HasValue)
+            newZPosition += motionVector.z;
     }
 
     private void Jump()
