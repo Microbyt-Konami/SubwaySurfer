@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float fowardSpeed;
     [SerializeField] private float jumpPower;
     [SerializeField] private float dodgeSpeed;
+    [SerializeField] private bool isResetPosInit = true;
+
     // Fields - Debug
     [Header("Player States")]
     [SerializeField] private bool noMove;
@@ -94,11 +96,22 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        position = Side.Middle;
         myTransform = GetComponent<Transform>();
         myAnimation = GetComponent<Animator>();
         _myCharacterController = GetComponent<CharacterController>();
         playerCollision = GetComponent<PlayerCollision>();
+        if (isResetPosInit)
+        {
+            newXPosition = xPosition = 0;
+            position = Side.Middle;
+            newZPosition = 0;
+        }
+        else
+        {
+            newXPosition = xPosition = myTransform.position.x;
+            position = (Side)(int)xPosition;
+            newZPosition = myTransform.position.z;
+        }
         yPosition = -7;
     }
 
