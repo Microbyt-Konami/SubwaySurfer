@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float fowardSpeed;
     [SerializeField] private float jumpPower;
     [SerializeField] private float dodgeSpeed;
+    [SerializeField] private bool isResetPosInit = true;
+
     // Fields - Debug
     [Header("Player States")]
     [SerializeField] private bool noMove;
@@ -29,6 +31,7 @@ public class PlayerController : MonoBehaviour
     // Variables
     private bool swipeLeft, swipeRight, swipeUp, swipeDown;
     private float newXPosition, xPosition, yPosition;
+    private float? newZPosition;
     private float rollTimer;
     private Vector3 motionVector;
 
@@ -64,6 +67,7 @@ public class PlayerController : MonoBehaviour
     public int IdStumbleSideLeft { get => idStumbleSideLeft; set => idStumbleSideLeft = value; }
     public int IdStumbleSideRight { get => idStumbleSideRight; set => idStumbleSideRight = value; }
     public bool NoMove { get => noMove; set => noMove = value; }
+    public Vector3 Position => myTransform.position;
 
     public void SetPlayerAnimator(int id, bool isCrossFade, float fadeTime = 0.1f)
     {
@@ -84,14 +88,30 @@ public class PlayerController : MonoBehaviour
         ResetCollision();
     }
 
+    public void SetPlayerPositionZ(float positionZ)
+    {
+        newZPosition = positionZ;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        position = Side.Middle;
         myTransform = GetComponent<Transform>();
         myAnimation = GetComponent<Animator>();
         _myCharacterController = GetComponent<CharacterController>();
         playerCollision = GetComponent<PlayerCollision>();
+        if (isResetPosInit)
+        {
+            newXPosition = xPosition = 0;
+            position = Side.Middle;
+            newZPosition = 0;
+        }
+        else
+        {
+            newXPosition = xPosition = myTransform.position.x;
+            position = (Side)(int)xPosition;
+            newZPosition = myTransform.position.z;
+        }
         yPosition = -7;
     }
 
@@ -107,6 +127,15 @@ public class PlayerController : MonoBehaviour
             Roll();
         }
         isGrounded = _myCharacterController.isGrounded;
+    }
+
+    void LateUpdate()
+    {
+        if (newZPosition.HasValue)
+        {
+            myTransform.position = new Vector3(myTransform.position.x, myTransform.position.y, newZPosition.Value);
+            newZPosition = null;
+        }
     }
 
     private void GetSwipe()
@@ -170,6 +199,8 @@ public class PlayerController : MonoBehaviour
         //playerTransform.position = new Vector3(xPosition, 0, 0);
         // cuidado es relativo no absoluto
         _myCharacterController.Move(motionVector);
+        if (newZPosition.HasValue)
+            newZPosition += motionVector.z;
     }
 
     private void Jump()
@@ -184,14 +215,14 @@ public class PlayerController : MonoBehaviour
             {
                 isJumping = true;
                 yPosition = jumpPower;
-                // Mezcla la animación actual con la de jump
+                // Mezcla la animaciï¿½n actual con la de jump
                 //playerAnimation.CrossFadeInFixedTime(idJump, 0.1f);
                 SetPlayerAnimator(idJump, true, 1f);
             }
         }
         else
         {
-            // Se baja mas rápido
+            // Se baja mas rï¿½pido
             yPosition -= jumpPower * 2 * Time.deltaTime;
             // Si la velocidad en y <=0 es que esta cayendo
             if (_myCharacterController.velocity.y <= 0)
@@ -206,7 +237,7 @@ public class PlayerController : MonoBehaviour
         {
             isRolling = false;
             rollTimer = 0;
-            // Poner ch a tamaño normal
+            // Poner ch a tamaï¿½o normal
             _myCharacterController.center = new Vector3(0, .45f, 0);
             _myCharacterController.height = .9f;
         }
@@ -215,7 +246,7 @@ public class PlayerController : MonoBehaviour
             isRolling = true;
             rollTimer = .5f;
             SetPlayerAnimator(idRoll, true);
-            // Poner ch a tamaño chico
+            // Poner ch a tamaï¿½o chico
             _myCharacterController.center = new Vector3(0, .2f, 0);
             _myCharacterController.height = .4f;
         }
