@@ -1205,7 +1205,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1300160149}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7967e68073eaa44b9ccef28c2b9792c, type: 3}
   m_Name: 
@@ -1216,6 +1216,9 @@ MonoBehaviour:
   - {fileID: 2100000, guid: bdb76dd4e900a7f47bf01a1f78f63fc3, type: 2}
   - {fileID: 2100000, guid: 15fc7c0afa251d645961782dc146bb35, type: 2}
   - {fileID: 2100000, guid: a8ee4fc6a0957dd4a8a4d45bd25d9995, type: 2}
+  firstValue: 0
+  waitForChangeValue: 0
+  waitForTransition: 0
 --- !u!4 &1300160151
 Transform:
   m_ObjectHideFlags: 0
@@ -2618,6 +2621,10 @@ PrefabInstance:
     - target: {fileID: 8347233338350407014, guid: 01ee6b86e47f3c96695c14096d322059, type: 3}
       propertyPath: m_Name
       value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8347233338350407014, guid: 01ee6b86e47f3c96695c14096d322059, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
