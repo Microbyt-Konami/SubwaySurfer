@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 
     // Components
     private PlayerController playerController;
+    private ShaderController shaderController;
 
     // Variables
     private bool isCountDown;
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour
     {
         playerController.NoMove = true;
         isGameObject = true;
+        shaderController?.DesActivateChangeValues();
     }
 
     private void Awake()
@@ -31,7 +33,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerController = GameManager.FindFirstObjectByType<PlayerController>();
+        playerController = FindFirstObjectByType<PlayerController>();
+        shaderController = FindFirstObjectByType<ShaderController>();
         StartCoroutine(DoCountDown());
     }
 
@@ -51,6 +54,7 @@ public class GameManager : MonoBehaviour
         }
         isCountDown = false;
         playerController.NoMove = false;
+        shaderController?.ActivateChangeValues();
     }
 
     private void OnGUI()
