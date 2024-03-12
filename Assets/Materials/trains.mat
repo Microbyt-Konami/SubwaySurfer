@@ -205,8 +205,8 @@ Material:
     - _Cull: 0
     - _CullMode: 2
     - _CullModeForward: 2
-    - _Curve_X: 0
-    - _Curve_Y: 0
+    - _Curve_X: -1
+    - _Curve_Y: 1
     - _Cutoff: 0.5
     - _DepthOffsetEnable: 0
     - _DetailAlbedoScale: 1
