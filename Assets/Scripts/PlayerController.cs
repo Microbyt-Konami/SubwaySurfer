@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
 
     // Components
     private Side position;
+    private bool hasChangeSaveXPosition = false;
     private Transform myTransform;
     private Animator myAnimation;
     private CharacterController _myCharacterController;
@@ -30,7 +31,7 @@ public class PlayerController : MonoBehaviour
 
     // Variables
     private bool swipeLeft, swipeRight, swipeUp, swipeDown;
-    private float newXPosition, xPosition, yPosition;
+    private float newXPosition, xPosition, saveXPosition, yPosition;
     private float? newZPosition;
     private float rollTimer;
     private Vector3 motionVector;
@@ -54,6 +55,7 @@ public class PlayerController : MonoBehaviour
     private int idDeathLower = Animator.StringToHash("DeathLower");
     private int idDeathMovingTrain = Animator.StringToHash("DeathMovingTrain");
     private int idDeathUpper = Animator.StringToHash("DeathUpper");
+    private int idStumbleSideEnd = Animator.StringToHash("StumbleSideEnd");
 
     public CharacterController MyCharacterController { get => _myCharacterController; set => _myCharacterController = value; }
     public int IdStumbleLow { get => idStumbleLow; set => idStumbleLow = value; }
@@ -69,15 +71,27 @@ public class PlayerController : MonoBehaviour
     public bool NoMove { get => noMove; set => noMove = value; }
     public Vector3 Position => myTransform.position;
 
-    public void SetPlayerAnimator(int id, bool isCrossFade, float fadeTime = 0.1f)
+    public void SetPlayerAnimator(int id, bool isCrossFade, float fadeTime = 0.1f, bool restoreXPosition = false)
     {
         // 0=> Base Layer
         myAnimation.SetLayerWeight(0, 1);
+        if (restoreXPosition)
+            StartCoroutine(RestoreXPositionCourotine());
         if (isCrossFade)
             myAnimation.CrossFadeInFixedTime(id, fadeTime);
         else
             myAnimation.Play(id);
         ResetCollision();
+    }
+
+    IEnumerator RestoreXPositionCourotine()
+    {
+        myAnimation.SetBool(idStumbleSideEnd, false);
+        do
+        {
+            yield return null;
+        } while (!myAnimation.GetBool(idStumbleSideEnd));
+        RestoreXPostion();
     }
 
     public void SetPlayerAnimatorWithLayer(int id)
@@ -92,6 +106,14 @@ public class PlayerController : MonoBehaviour
     {
         newZPosition = positionZ;
     }
+
+    public void SaveXPosition()
+    {
+        saveXPosition = newZPosition ?? 0;
+        hasChangeSaveXPosition = false;
+    }
+
+    public void RestoreXPostion() => hasChangeSaveXPosition = true;
 
     // Start is called before the first frame update
     void Start()
@@ -135,6 +157,13 @@ public class PlayerController : MonoBehaviour
         {
             myTransform.position = new Vector3(myTransform.position.x, myTransform.position.y, newZPosition.Value);
             newZPosition = null;
+        }
+        if (hasChangeSaveXPosition)
+        {
+            position = (Side)saveXPosition;
+            newXPosition = xPosition = saveXPosition;
+            myTransform.position = new Vector3(xPosition, myTransform.position.y, myTransform.position.z);
+            hasChangeSaveXPosition = false;
         }
     }
 

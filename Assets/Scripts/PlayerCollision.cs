@@ -23,6 +23,7 @@ public class PlayerCollision : MonoBehaviour
 
     public void OnCharacterColission(Collider collider)
     {
+        playerController.SaveXPosition();
         _collisionX = CalcCollisionX(collider);
         _collisionY = CalcCollisionY(collider);
         _collisionZ = CalcCollisionZ(collider);
@@ -70,11 +71,11 @@ public class PlayerCollision : MonoBehaviour
         {
             if (_collisionX == CollisionX.Right)
             {
-                playerController.SetPlayerAnimator(playerController.IdStumbleSideRight, false);
+                playerController.SetPlayerAnimator(playerController.IdStumbleSideRight, false, restoreXPosition: true);
             }
             else if (_collisionX == CollisionX.Left)
             {
-                playerController.SetPlayerAnimator(playerController.IdStumbleSideLeft, false);
+                playerController.SetPlayerAnimator(playerController.IdStumbleSideLeft, false, restoreXPosition: true);
             }
         }
         else
