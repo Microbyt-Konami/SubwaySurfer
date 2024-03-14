@@ -22,7 +22,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool isGrounded;
 
     // Components
-    private Side position;
+    [SerializeField] private Side position;
+    [SerializeField] private Side oldPosition;
+    [SerializeField] private Side savePosition;
+    private bool hasChangeSaveXPosition = false;
     private Transform myTransform;
     private Animator myAnimation;
     private CharacterController _myCharacterController;
@@ -30,7 +33,10 @@ public class PlayerController : MonoBehaviour
 
     // Variables
     private bool swipeLeft, swipeRight, swipeUp, swipeDown;
-    private float newXPosition, xPosition, yPosition;
+    [SerializeField] private float newXPosition;
+    [SerializeField] private float xPosition;
+    [SerializeField] private float saveXPosition;
+    private float yPosition;
     private float? newZPosition;
     private float rollTimer;
     private Vector3 motionVector;
@@ -48,12 +54,13 @@ public class PlayerController : MonoBehaviour
     private int idStumbleFall = Animator.StringToHash("StumbleFall");
     private int idStumbleOffLeft = Animator.StringToHash("StumbleOffLeft");
     private int idStumbleOffRight = Animator.StringToHash("StumbleOffRight");
-    private int idStumbleSideLeft = Animator.StringToHash("StumbleSideLeftl");
+    private int idStumbleSideLeft = Animator.StringToHash("StumbleSideLeft");
     private int idStumbleSideRight = Animator.StringToHash("StumbleSideRight");
     private int idDeathBounce = Animator.StringToHash("DeathBounce");
     private int idDeathLower = Animator.StringToHash("DeathLower");
     private int idDeathMovingTrain = Animator.StringToHash("DeathMovingTrain");
     private int idDeathUpper = Animator.StringToHash("DeathUpper");
+    private int idStumbleSideEnd = Animator.StringToHash("StumbleSideEnd");
 
     public CharacterController MyCharacterController { get => _myCharacterController; set => _myCharacterController = value; }
     public int IdStumbleLow { get => idStumbleLow; set => idStumbleLow = value; }
@@ -69,15 +76,27 @@ public class PlayerController : MonoBehaviour
     public bool NoMove { get => noMove; set => noMove = value; }
     public Vector3 Position => myTransform.position;
 
-    public void SetPlayerAnimator(int id, bool isCrossFade, float fadeTime = 0.1f)
+    public void SetPlayerAnimator(int id, bool isCrossFade, float fadeTime = 0.1f, bool restoreXPosition = false)
     {
         // 0=> Base Layer
         myAnimation.SetLayerWeight(0, 1);
+        if (restoreXPosition)
+            StartCoroutine(RestoreXPositionCourotine());
         if (isCrossFade)
             myAnimation.CrossFadeInFixedTime(id, fadeTime);
         else
             myAnimation.Play(id);
         ResetCollision();
+    }
+
+    IEnumerator RestoreXPositionCourotine()
+    {
+        myAnimation.SetBool(idStumbleSideEnd, false);
+        do
+        {
+            yield return null;
+        } while (!myAnimation.GetBool(idStumbleSideEnd));
+        RestoreXPostion();
     }
 
     public void SetPlayerAnimatorWithLayer(int id)
@@ -92,6 +111,15 @@ public class PlayerController : MonoBehaviour
     {
         newZPosition = positionZ;
     }
+
+    public void SaveXPosition()
+    {
+        savePosition = oldPosition;
+        saveXPosition = (float)oldPosition;
+        hasChangeSaveXPosition = false;
+    }
+
+    public void RestoreXPostion() => hasChangeSaveXPosition = true; //UpdatePlayerXPosition(oldPosition);
 
     // Start is called before the first frame update
     void Start()
@@ -112,6 +140,7 @@ public class PlayerController : MonoBehaviour
             position = (Side)(int)xPosition;
             newZPosition = myTransform.position.z;
         }
+        oldPosition = position;
         yPosition = -7;
     }
 
@@ -135,6 +164,13 @@ public class PlayerController : MonoBehaviour
         {
             myTransform.position = new Vector3(myTransform.position.x, myTransform.position.y, newZPosition.Value);
             newZPosition = null;
+        }
+        if (hasChangeSaveXPosition)
+        {
+            position = (Side)saveXPosition;
+            newXPosition = xPosition = saveXPosition;
+            myTransform.position = new Vector3(xPosition, myTransform.position.y, myTransform.position.z);
+            hasChangeSaveXPosition = false;
         }
     }
 
@@ -189,6 +225,7 @@ public class PlayerController : MonoBehaviour
     private void UpdatePlayerXPosition(Side position)
     {
         newXPosition = (int)position;
+        oldPosition = this.position;
         this.position = position;
     }
 
