@@ -22,7 +22,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool isGrounded;
 
     // Components
-    private Side position;
+    [SerializeField] private Side position;
+    [SerializeField] private Side oldPosition;
+    [SerializeField] private Side savePosition;
     private bool hasChangeSaveXPosition = false;
     private Transform myTransform;
     private Animator myAnimation;
@@ -31,7 +33,10 @@ public class PlayerController : MonoBehaviour
 
     // Variables
     private bool swipeLeft, swipeRight, swipeUp, swipeDown;
-    private float newXPosition, xPosition, saveXPosition, yPosition;
+    [SerializeField] private float newXPosition;
+    [SerializeField] private float xPosition;
+    [SerializeField] private float saveXPosition;
+    private float yPosition;
     private float? newZPosition;
     private float rollTimer;
     private Vector3 motionVector;
@@ -49,7 +54,7 @@ public class PlayerController : MonoBehaviour
     private int idStumbleFall = Animator.StringToHash("StumbleFall");
     private int idStumbleOffLeft = Animator.StringToHash("StumbleOffLeft");
     private int idStumbleOffRight = Animator.StringToHash("StumbleOffRight");
-    private int idStumbleSideLeft = Animator.StringToHash("StumbleSideLeftl");
+    private int idStumbleSideLeft = Animator.StringToHash("StumbleSideLeft");
     private int idStumbleSideRight = Animator.StringToHash("StumbleSideRight");
     private int idDeathBounce = Animator.StringToHash("DeathBounce");
     private int idDeathLower = Animator.StringToHash("DeathLower");
@@ -109,11 +114,12 @@ public class PlayerController : MonoBehaviour
 
     public void SaveXPosition()
     {
-        saveXPosition = newZPosition ?? 0;
+        savePosition = oldPosition;
+        saveXPosition = (float)oldPosition;
         hasChangeSaveXPosition = false;
     }
 
-    public void RestoreXPostion() => hasChangeSaveXPosition = true;
+    public void RestoreXPostion() => hasChangeSaveXPosition = true; //UpdatePlayerXPosition(oldPosition);
 
     // Start is called before the first frame update
     void Start()
@@ -134,6 +140,7 @@ public class PlayerController : MonoBehaviour
             position = (Side)(int)xPosition;
             newZPosition = myTransform.position.z;
         }
+        oldPosition = position;
         yPosition = -7;
     }
 
@@ -218,6 +225,7 @@ public class PlayerController : MonoBehaviour
     private void UpdatePlayerXPosition(Side position)
     {
         newXPosition = (int)position;
+        oldPosition = this.position;
         this.position = position;
     }
 
