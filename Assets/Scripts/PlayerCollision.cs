@@ -23,6 +23,7 @@ public class PlayerCollision : MonoBehaviour
 
     public void OnCharacterColission(Collider collider)
     {
+        playerController.SaveXPosition();
         _collisionX = CalcCollisionX(collider);
         _collisionY = CalcCollisionY(collider);
         _collisionZ = CalcCollisionZ(collider);
@@ -42,6 +43,7 @@ public class PlayerCollision : MonoBehaviour
             {
                 playerController.SetPlayerAnimator(playerController.IdDeathLower, false);
                 print("Dead Lower");
+                GameManager.Instance?.GameOver();
             }
             else if (_collisionY == CollisionY.Middle)
             {
@@ -49,28 +51,31 @@ public class PlayerCollision : MonoBehaviour
                 {
                     playerController.SetPlayerAnimator(playerController.IdDeathMovingTrain, false);
                     print("Dead MovingTrain");
+                    GameManager.Instance?.GameOver();
                 }
                 else if (!collider.CompareTag("Ramp"))
                 {
                     playerController.SetPlayerAnimator(playerController.IdDeathBounce, false);
                     print("Dead Bounce");
+                    GameManager.Instance?.GameOver();
                 }
             }
             else if (_collisionY == CollisionY.Up && !playerController.IsRolling)
             {
                 playerController.SetPlayerAnimator(playerController.IdDeathUpper, false);
                 print("Dead Upper");
+                GameManager.Instance?.GameOver();
             }
         }
         else if (_collisionZ == CollisionZ.Middle)
         {
             if (_collisionX == CollisionX.Right)
             {
-                playerController.SetPlayerAnimator(playerController.IdStumbleSideRight, false);
+                playerController.SetPlayerAnimator(playerController.IdStumbleSideRight, false, restoreXPosition: true);
             }
             else if (_collisionX == CollisionX.Left)
             {
-                playerController.SetPlayerAnimator(playerController.IdStumbleSideLeft, false);
+                playerController.SetPlayerAnimator(playerController.IdStumbleSideLeft, false, restoreXPosition: true);
             }
         }
         else
@@ -93,18 +98,18 @@ public class PlayerCollision : MonoBehaviour
 
     private CollisionX CalcCollisionX(Collider collider)
     {
-        // Collider Bounds obtiene los valores del tamaño de collider BOUNDS == LIMITE
+        // Collider Bounds obtiene los valores del tamaï¿½o de collider BOUNDS == LIMITE
         Bounds characterControllerBounds = playerController.MyCharacterController.bounds;
         Bounds colliderBounds = collider.bounds;
-        // obtener el punto máximo de los mínimos de X
+        // obtener el punto mï¿½ximo de los mï¿½nimos de X
         float minX = Mathf.Max(colliderBounds.min.x, characterControllerBounds.min.x);
-        // obtener el punto máximo de los mínimos de X
+        // obtener el punto mï¿½ximo de los mï¿½nimos de X
         float maxX = Mathf.Min(colliderBounds.max.x, characterControllerBounds.max.x);
         // SABER EL PUNTO EXACTO DONDE COLISIONA UN OBJETO
 
-        // Al mínimo sumarle el máximo y obtener el total
-        // Lo divido por 2 así estaré en la mitad de la colisión o pivote
-        // Se lo resto al total de collider del que necesite obtener la posició exacta
+        // Al mï¿½nimo sumarle el mï¿½ximo y obtener el total
+        // Lo divido por 2 asï¿½ estarï¿½ en la mitad de la colisiï¿½n o pivote
+        // Se lo resto al total de collider del que necesite obtener la posiciï¿½ exacta
 
         float average = (minX + maxX) / 2 - colliderBounds.min.x;
 
@@ -123,18 +128,18 @@ public class PlayerCollision : MonoBehaviour
 
     private CollisionY CalcCollisionY(Collider collider)
     {
-        // Collider Bounds obtiene los valores del tamaño de collider BOUNDS == LIMITE
+        // Collider Bounds obtiene los valores del tamaï¿½o de collider BOUNDS == LIMITE
         Bounds characterControllerBounds = playerController.MyCharacterController.bounds;
         Bounds colliderBounds = collider.bounds;
-        // obtener el punto máximo de los mínimos de Y
+        // obtener el punto mï¿½ximo de los mï¿½nimos de Y
         float minY = Mathf.Max(colliderBounds.min.y, characterControllerBounds.min.y);
-        // obtener el punto máximo de los mínimos de Y
+        // obtener el punto mï¿½ximo de los mï¿½nimos de Y
         float maxY = Mathf.Min(colliderBounds.max.y, characterControllerBounds.max.y);
         // SABER EL PUNTO EXACTO DONDE COLISIONA UN OBJETO
 
-        // Al mínimo sumarle el máximo y obtener el total
-        // Lo divido por 2 así estaré en la mitad de la colisión o pivote
-        // Se lo resto al total de collider del que necesite obtener la posició exacta
+        // Al mï¿½nimo sumarle el mï¿½ximo y obtener el total
+        // Lo divido por 2 asï¿½ estarï¿½ en la mitad de la colisiï¿½n o pivote
+        // Se lo resto al total de collider del que necesite obtener la posiciï¿½ exacta
 
         float average = (minY + maxY) / 2 - colliderBounds.min.y;
 
@@ -156,18 +161,18 @@ public class PlayerCollision : MonoBehaviour
 
     private CollisionZ CalcCollisionZ(Collider collider)
     {
-        // Collider Bounds obtiene los valores del tamaño de collider BOUNDS == LIMITE
+        // Collider Bounds obtiene los valores del tamaï¿½o de collider BOUNDS == LIMITE
         Bounds characterControllerBounds = playerController.MyCharacterController.bounds;
         Bounds colliderBounds = collider.bounds;
-        // obtener el punto máximo de los mínimos de Z
+        // obtener el punto mï¿½ximo de los mï¿½nimos de Z
         float minZ = Mathf.Max(colliderBounds.min.z, characterControllerBounds.min.z);
-        // obtener el punto máximo de los mínimos de Z
+        // obtener el punto mï¿½ximo de los mï¿½nimos de Z
         float maxZ = Mathf.Min(colliderBounds.max.z, characterControllerBounds.max.z);
         // SABER EL PUNTO EXACTO DONDE COLISIONA UN OBJETO
 
-        // Al mínimo sumarle el máximo y obtener el total
-        // Lo divido por 2 así estaré en la mitad de la colisión o pivote
-        // Se lo resto al total de collider del que necesite obtener la posició exacta
+        // Al mï¿½nimo sumarle el mï¿½ximo y obtener el total
+        // Lo divido por 2 asï¿½ estarï¿½ en la mitad de la colisiï¿½n o pivote
+        // Se lo resto al total de collider del que necesite obtener la posiciï¿½ exacta
 
         float average = (minZ + maxZ) / 2 - colliderBounds.min.z;
 

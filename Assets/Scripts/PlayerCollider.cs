@@ -19,6 +19,8 @@ public class PlayerCollider : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
             return;
 
+        print($"OnCollisionEnter {collision.gameObject.transform.position}");
+
         playerCollision.OnCharacterColission(collision.collider);
     }
 }
