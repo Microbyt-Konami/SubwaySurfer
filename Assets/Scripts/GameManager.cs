@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
 
             var styleText = GUI.skin.GetStyle("label");
 
-            styleText.fontSize = 50;
+            styleText.fontSize = 50 * 2;
             styleText.fontStyle = FontStyle.Bold;
 
             GUI.color = Color.black;
@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour
                     SceneManager.LoadScene(0);
                 GUILayout.EndHorizontal();
                 */
-        if (GUI.Button(new Rect(Screen.width - 295, 0, 295, 80), "RESTART", styleButton))
+        if (GUI.Button(new Rect(Screen.width - 295, 0, 295, 70), "RESTART", styleButton))
             SceneManager.LoadScene(0);
         // }
     }
