@@ -59,14 +59,16 @@ public class GameManager : MonoBehaviour
 
     private void OnGUI()
     {
-        if (!isCountDown && !isGameObject)
-            return;
+        // if (!isCountDown && !isGameObject)
+        //     return;
 
-        GUILayout.BeginArea(new Rect(0, 0, Screen.width, Screen.height));
-        GUILayout.FlexibleSpace();
         if (isCountDown)
         {
+            GUILayout.BeginArea(new Rect(0, 0, Screen.width, Screen.height));
+            GUILayout.FlexibleSpace();
+
             var styleText = GUI.skin.GetStyle("label");
+
             styleText.fontSize = 50;
             styleText.fontStyle = FontStyle.Bold;
 
@@ -78,26 +80,28 @@ public class GameManager : MonoBehaviour
 
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
+            GUILayout.FlexibleSpace();
+            GUILayout.EndArea();
         }
 
-        if (isGameObject)
-        {
-            var styleButton = GUI.skin.GetStyle("button");
-            styleButton.fontSize = 30;
-            styleButton.fontStyle = FontStyle.Bold;
+        // if (isGameObject)
+        // {
+        var styleButton = GUI.skin.GetStyle("button");
 
-            GUI.color = Color.white;
-            GUI.backgroundColor = Color.red;
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
+        styleButton.fontSize = 50;
+        styleButton.fontStyle = FontStyle.Bold;
 
-            if (GUILayout.Button("RESTART", styleButton, GUILayout.Width(295), GUILayout.Height(150)))
-                SceneManager.LoadScene(0);
+        GUI.color = Color.white;
+        GUI.backgroundColor = Color.red;
 
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-        }
-        GUILayout.FlexibleSpace();
-        GUILayout.EndArea();
+        /*
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("RESTART", styleButton, GUILayout.Width(295), GUILayout.Height(150)))
+                    SceneManager.LoadScene(0);
+                GUILayout.EndHorizontal();
+                */
+        if (GUI.Button(new Rect(Screen.width - 295, 0, 295, 80), "RESTART", styleButton))
+            SceneManager.LoadScene(0);
+        // }
     }
 }
