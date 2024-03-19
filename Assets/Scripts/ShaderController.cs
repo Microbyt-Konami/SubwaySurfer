@@ -37,6 +37,15 @@ public class ShaderController : MonoBehaviour
         }
     }
 
+    void OnApplicationQuit()
+    {
+        foreach (var m in materials)
+        {
+            m.SetFloat(Shader.PropertyToID("_Curve_X"), 0);
+            m.SetFloat(Shader.PropertyToID("_Curve_Y"), 0);
+        }
+    }
+
     IEnumerator ChangeValuesCourotine()
     {
         while (true)
