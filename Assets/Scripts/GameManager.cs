@@ -6,8 +6,10 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+
     // Fields
     [SerializeField] private int countDownSecs;
+    [SerializeField] private bool isLevelCurve;
 
     // Components
     private PlayerController playerController;
@@ -54,7 +56,8 @@ public class GameManager : MonoBehaviour
         }
         isCountDown = false;
         playerController.NoMove = false;
-        shaderController?.ActivateChangeValues();
+        if (isLevelCurve)
+            shaderController?.ActivateChangeValues();
     }
 
     private void OnGUI()
