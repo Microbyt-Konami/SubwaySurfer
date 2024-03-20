@@ -24,7 +24,8 @@ public class GameManager : MonoBehaviour
     {
         playerController.NoMove = true;
         isGameObject = true;
-        shaderController?.DesActivateChangeValues();
+        if (isLevelCurve)
+            shaderController?.DesActivateChangeValues();
     }
 
     private void Awake()
