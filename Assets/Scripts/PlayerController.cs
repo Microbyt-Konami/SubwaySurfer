@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     private Animator myAnimation;
     private CharacterController _myCharacterController;
     private PlayerCollision playerCollision;
+    private TunnelController tunnelController;
 
     // Variables
     private bool swipeLeft, swipeRight, swipeUp, swipeDown;
@@ -128,6 +129,7 @@ public class PlayerController : MonoBehaviour
         _myCharacterController = GetComponent<CharacterController>();
         playerCollision = GetComponent<PlayerCollision>();
 
+        tunnelController = null;
         newXPosition = xPosition = myTransform.position.x;
         position = (Side)(int)xPosition;
         newZPosition = myTransform.position.z;
@@ -165,6 +167,24 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Tunnel"))
+        {
+            print($"Enter Tunnel {other.gameObject.name}");
+            tunnelController = other.gameObject.GetComponent<TunnelController>();
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Tunnel"))
+        {
+            print($"Exit Tunnel {other.gameObject.name}");
+            tunnelController = null;
+        }
+    }
+
     private void GetSwipe()
     {
         swipeLeft = Input.GetKeyDown(KeyCode.LeftArrow);
@@ -181,6 +201,14 @@ public class PlayerController : MonoBehaviour
         playerCollision.CollisionZ = CollisionZ.None;
     }
 
+    private bool CanMove(Side side, Side sideNew)
+    {
+        if (tunnelController == null)
+            return true;
+
+        return tunnelController.CanMove(side, sideNew);
+    }
+
     private void SetPlayerPosition()
     {
         if (swipeLeft && !isRolling)
@@ -188,12 +216,18 @@ public class PlayerController : MonoBehaviour
             switch (position)
             {
                 case Side.Middle:
-                    UpdatePlayerXPosition(Side.Left);
-                    SetPlayerAnimator(idDodgeLeft, false);
+                    if (CanMove(position, Side.Left))
+                    {
+                        UpdatePlayerXPosition(Side.Left);
+                        SetPlayerAnimator(idDodgeLeft, false);
+                    }
                     break;
                 case Side.Right:
-                    UpdatePlayerXPosition(Side.Middle);
-                    SetPlayerAnimator(idDodgeLeft, false);
+                    if (CanMove(position, Side.Middle))
+                    {
+                        UpdatePlayerXPosition(Side.Middle);
+                        SetPlayerAnimator(idDodgeLeft, false);
+                    }
                     break;
             }
         }
@@ -202,12 +236,18 @@ public class PlayerController : MonoBehaviour
             switch (position)
             {
                 case Side.Middle:
-                    UpdatePlayerXPosition(Side.Right);
-                    SetPlayerAnimator(idDodgeRight, false);
+                    if (CanMove(position, Side.Right))
+                    {
+                        UpdatePlayerXPosition(Side.Right);
+                        SetPlayerAnimator(idDodgeRight, false);
+                    }
                     break;
                 case Side.Left:
-                    UpdatePlayerXPosition(Side.Middle);
-                    SetPlayerAnimator(idDodgeRight, false);
+                    if (CanMove(position, Side.Middle))
+                    {
+                        UpdatePlayerXPosition(Side.Middle);
+                        SetPlayerAnimator(idDodgeRight, false);
+                    }
                     break;
             }
         }
