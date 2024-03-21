@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour
         position = (Side)(int)xPosition;
         newZPosition = myTransform.position.z;
         oldPosition = position;
-        yPosition = -7;
+        //yPosition = -7;
     }
 
     // Update is called once per frame
