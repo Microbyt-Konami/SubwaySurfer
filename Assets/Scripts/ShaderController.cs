@@ -15,17 +15,15 @@ public class ShaderController : MonoBehaviour
     private float transitionTime;
     private float curveXInitial, curveYInitial, curveXEnd, curveYEnd;
 
-    public void ActivateChangeValues()
-    {
-        curveXInitial = curveX = Random.value > .5f ? firstValue : -firstValue;
-        curveYInitial = curveY = Random.value > .5f ? firstValue : -firstValue;
-        curveXEnd = -curveX;
-        curveYEnd = -curveY;
-        transitionTime = 0f;
-        changeValuesCoroutine = StartCoroutine(ChangeValuesCourotine());
-    }
+    public void ActivateChangeValues() => changeValuesCoroutine = StartCoroutine(ChangeValuesCourotine());
 
     public void DesActivateChangeValues() => StopCoroutine(changeValuesCoroutine);
+
+    void Start()
+    {
+        curveX = curveY = curveXInitial = curveYInitial = 0;
+        transitionTime = 0f;
+    }
 
     // Update is called once per frame
     void Update()
@@ -37,35 +35,50 @@ public class ShaderController : MonoBehaviour
         }
     }
 
+    void OnApplicationQuit()
+    {
+        foreach (var m in materials)
+        {
+            m.SetFloat(Shader.PropertyToID("_Curve_X"), 0);
+            m.SetFloat(Shader.PropertyToID("_Curve_Y"), 0);
+        }
+    }
+
     IEnumerator ChangeValuesCourotine()
     {
+        curveX = curveXInitial;
+        curveY = curveYInitial;
         while (true)
         {
-            if (transitionTime > waitForTransition)
-            {
-                // Los valores deben permanecer fijos durante 3 segundos y luego iniciar la transición hacia el valor opuesto o puede mantenerse fijo en el valor anterior para que no sea tan repetitivo.
-                yield return new WaitForSeconds(waitForChangeValue);
+            // Los valores deben permanecer fijos durante 3 segundos y luego iniciar la transición hacia el valor opuesto
+            // o puede mantenerse fijo en el valor anterior para que no sea tan repetitivo.
+            yield return new WaitForSeconds(waitForChangeValue);
 
-                curveX = curveXInitial = curveXEnd;
-                curveY = curveYInitial = curveYEnd;
-                if (Random.value < .5f)
-                    curveX *= -1;
-                if (Random.value < .5f)
-                    curveY *= -1;
-                curveXEnd = -curveX;
-                curveYEnd = -curveY;
-                transitionTime = 0f;
-
-                yield return null;
-
-                continue;
-            }
-            // La transición de un valor a otro debe durar 2 segundos
-            transitionTime += Time.deltaTime;
-            curveX = Mathf.Lerp(curveXInitial, curveXEnd, transitionTime / waitForTransition);
-            curveY = Mathf.Lerp(curveYInitial, curveYEnd, transitionTime / waitForTransition);
+            transitionTime = 0f;
+            // Al inicio la curvatura deberá empezar en 0 de X y 0 de Y, pudiendo ser el primer valor 1 o -1. 
+            // Los valores deben permanecer fijos durante 3 segundos y luego iniciar la transición hacia el valor opuesto 
+            // o puede mantenerse fijo en el valor anterior para que no sea tan repetitivo
+            curveXEnd =
+                 (curveXInitial == 0f)
+                    ? Random.value > .5f ? firstValue : -firstValue
+                    : (Random.value < .5f) ? curveXInitial : -curveXInitial;
+            curveYEnd =
+                (curveYInitial == 0f)
+                   ? Random.value > .5f ? firstValue : -firstValue
+                   : (Random.value < .5f) ? curveYInitial : -curveYInitial;
+            transitionTime = 0f;
 
             yield return null;
+
+            // La transición de un valor a otro debe durar 2 segundos
+            do
+            {
+                transitionTime += Time.deltaTime;
+                curveX = Mathf.Lerp(curveXInitial, curveXEnd, transitionTime / waitForTransition);
+                curveY = Mathf.Lerp(curveYInitial, curveYEnd, transitionTime / waitForTransition);
+
+                yield return null;
+            } while (transitionTime < waitForTransition);
         }
     }
 }

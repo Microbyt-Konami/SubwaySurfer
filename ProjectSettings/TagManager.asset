@@ -6,6 +6,7 @@ TagManager:
   tags:
   - TrainOn
   - Ramp
+  - Tunnel
   layers:
   - Default
   - TransparentFX

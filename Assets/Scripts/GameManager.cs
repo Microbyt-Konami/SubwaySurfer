@@ -6,8 +6,10 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+
     // Fields
     [SerializeField] private int countDownSecs;
+    [SerializeField] private bool isLevelCurve;
 
     // Components
     private PlayerController playerController;
@@ -22,7 +24,8 @@ public class GameManager : MonoBehaviour
     {
         playerController.NoMove = true;
         isGameObject = true;
-        shaderController?.DesActivateChangeValues();
+        if (isLevelCurve)
+            shaderController?.DesActivateChangeValues();
     }
 
     private void Awake()
@@ -53,21 +56,25 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSecondsRealtime(1);
         }
         isCountDown = false;
+        playerController.SetPlayerAnimator(playerController.IdRun, false);
         playerController.NoMove = false;
-        shaderController?.ActivateChangeValues();
+        if (isLevelCurve)
+            shaderController?.ActivateChangeValues();
     }
 
     private void OnGUI()
     {
-        if (!isCountDown && !isGameObject)
-            return;
+        // if (!isCountDown && !isGameObject)
+        //     return;
 
-        GUILayout.BeginArea(new Rect(0, 0, Screen.width, Screen.height));
-        GUILayout.FlexibleSpace();
         if (isCountDown)
         {
+            GUILayout.BeginArea(new Rect(0, 0, Screen.width, Screen.height));
+            GUILayout.FlexibleSpace();
+
             var styleText = GUI.skin.GetStyle("label");
-            styleText.fontSize = 50;
+
+            styleText.fontSize = 50 * 2;
             styleText.fontStyle = FontStyle.Bold;
 
             GUI.color = Color.black;
@@ -78,26 +85,28 @@ public class GameManager : MonoBehaviour
 
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
+            GUILayout.FlexibleSpace();
+            GUILayout.EndArea();
         }
 
-        if (isGameObject)
-        {
-            var styleButton = GUI.skin.GetStyle("button");
-            styleButton.fontSize = 30;
-            styleButton.fontStyle = FontStyle.Bold;
+        // if (isGameObject)
+        // {
+        var styleButton = GUI.skin.GetStyle("button");
 
-            GUI.color = Color.white;
-            GUI.backgroundColor = Color.red;
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
+        styleButton.fontSize = 50;
+        styleButton.fontStyle = FontStyle.Bold;
 
-            if (GUILayout.Button("RESTART", styleButton, GUILayout.Width(295), GUILayout.Height(150)))
-                SceneManager.LoadScene(0);
+        GUI.color = Color.white;
+        GUI.backgroundColor = Color.red;
 
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-        }
-        GUILayout.FlexibleSpace();
-        GUILayout.EndArea();
+        /*
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("RESTART", styleButton, GUILayout.Width(295), GUILayout.Height(150)))
+                    SceneManager.LoadScene(0);
+                GUILayout.EndHorizontal();
+                */
+        if (GUI.Button(new Rect(Screen.width - 295, 0, 295, 70), "RESTART", styleButton))
+            SceneManager.LoadScene(0);
+        // }
     }
 }
