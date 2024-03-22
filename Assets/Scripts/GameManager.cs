@@ -49,7 +49,6 @@ public class GameManager : MonoBehaviour
 
     IEnumerator DoCountDown()
     {
-        playerController.NoAnimation = true;
         playerController.NoMove = true;
         isCountDown = true;
         for (secondCountDown = 3; secondCountDown >= 1; secondCountDown--)
@@ -57,7 +56,7 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSecondsRealtime(1);
         }
         isCountDown = false;
-        playerController.NoAnimation = false;
+        playerController.SetPlayerAnimator(playerController.IdRun, false);
         playerController.NoMove = false;
         if (isLevelCurve)
             shaderController?.ActivateChangeValues();

@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
 
     // Fields - Debug
     [Header("Player States")]
-    [SerializeField] private bool noMove, noAnimation;
+    [SerializeField] private bool noMove;
     [SerializeField] private bool isRolling;
     [SerializeField] private bool isJumping;
     [SerializeField] private bool isGrounded;
@@ -36,13 +36,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float newXPosition;
     [SerializeField] private float xPosition;
     [SerializeField] private float saveXPosition;
-    private float yPosition;
+    [SerializeField] private float yPosition;
     private float? newZPosition;
     private float rollTimer;
     private Vector3 motionVector;
 
     // Ids
-    private int idNoMove = Animator.StringToHash("NoMove");
+    private int idRun = Animator.StringToHash("run");
     private int idDodgeLeft = Animator.StringToHash("DodgeLeft");
     private int idDodgeRight = Animator.StringToHash("DodgeRight");
     private int idJump = Animator.StringToHash("Jump");
@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviour
     private int idStumbleSideEnd = Animator.StringToHash("StumbleSideEnd");
 
     public CharacterController MyCharacterController { get => _myCharacterController; set => _myCharacterController = value; }
+    public int IdRun => idRun;
     public int IdStumbleLow { get => idStumbleLow; set => idStumbleLow = value; }
     public int IdDeathLower { get => idDeathLower; set => idDeathLower = value; }
     public int IdDeathMovingTrain { get => idDeathMovingTrain; set => idDeathMovingTrain = value; }
@@ -75,16 +76,6 @@ public class PlayerController : MonoBehaviour
     public int IdStumbleSideLeft { get => idStumbleSideLeft; set => idStumbleSideLeft = value; }
     public int IdStumbleSideRight { get => idStumbleSideRight; set => idStumbleSideRight = value; }
     public bool NoMove { get => noMove; set => noMove = value; }
-    public bool NoAnimation
-    {
-        get => noAnimation;
-        set
-        {
-            noAnimation = value;
-            if (myAnimation != null)
-                myAnimation.SetBool(idNoMove, value);
-        }
-    }
     public Vector3 Position => myTransform.position;
 
     public void SetPlayerAnimator(int id, bool isCrossFade, float fadeTime = 0.1f, bool restoreXPosition = false)
@@ -140,13 +131,15 @@ public class PlayerController : MonoBehaviour
         _myCharacterController = GetComponent<CharacterController>();
         playerCollision = GetComponent<PlayerCollision>();
 
-        myAnimation.SetBool(idNoMove, noAnimation);
+        //myAnimation.SetBool(idNoMove, noAnimation);
         tunnelController = null;
         newXPosition = xPosition = myTransform.position.x;
         position = (Side)(int)xPosition;
         newZPosition = myTransform.position.z;
         oldPosition = position;
-        //yPosition = -7;
+        yPosition = -7;
+        //yPosition = 0.07999992f;
+        //yPosition = 0;
     }
 
     // Update is called once per frame

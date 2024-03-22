@@ -166,13 +166,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59b8762e985e994fbd59dfd46b9956b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fowardSpeed: 6
-  jumpPower: 10
+  fowardSpeed: 10
+  jumpPower: 15
   dodgeSpeed: 8
   noMove: 0
   isRolling: 0
   isJumping: 0
   isGrounded: 0
+  position: 0
+  oldPosition: 0
+  savePosition: 0
+  newXPosition: 0
+  xPosition: 0
+  saveXPosition: 0
+  yPosition: 0
 --- !u!114 &5010040894306768406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -695,7 +702,7 @@ CapsuleCollider:
   m_Radius: 0.34
   m_Height: 0.92
   m_Direction: 1
-  m_Center: {x: 0, y: 0.5, z: 0.2}
+  m_Center: {x: 0, y: 0.55, z: 0.2}
 --- !u!54 &1192387924253821673
 Rigidbody:
   m_ObjectHideFlags: 0
