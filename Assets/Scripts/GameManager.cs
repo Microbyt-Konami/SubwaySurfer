@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
         }
         isCountDown = false;
         playerController.SetPlayerAnimator(playerController.IdRun, false);
-        playerController.NoMove = false;
+        //playerController.NoMove = false;
         if (isLevelCurve)
             shaderController?.ActivateChangeValues();
     }

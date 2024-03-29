@@ -19610,7 +19610,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: bdb76dd4e900a7f47bf01a1f78f63fc3, type: 2}
   - {fileID: 2100000, guid: 15fc7c0afa251d645961782dc146bb35, type: 2}
   - {fileID: 2100000, guid: 903ca4a5ff848e2429fafa1673cc1b0f, type: 2}
-  - {fileID: 2100000, guid: 1530e07ed53bdcc6abfb945a8df8a60b, type: 2}
   firstValue: 1
   waitForChangeValue: 3
   waitForTransition: 2
