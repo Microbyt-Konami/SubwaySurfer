@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour
     private int idDeathMovingTrain = Animator.StringToHash("DeathMovingTrain");
     private int idDeathUpper = Animator.StringToHash("DeathUpper");
     private int idStumbleSideEnd = Animator.StringToHash("StumbleSideEnd");
+    private int idNoMove = Animator.StringToHash("NoMove");
 
     public CharacterController MyCharacterController { get => _myCharacterController; set => _myCharacterController = value; }
     public int IdRun => idRun;
@@ -75,6 +76,7 @@ public class PlayerController : MonoBehaviour
     public int IdStumbleCornerRight { get => idStumbleCornerRight; set => idStumbleCornerRight = value; }
     public int IdStumbleSideLeft { get => idStumbleSideLeft; set => idStumbleSideLeft = value; }
     public int IdStumbleSideRight { get => idStumbleSideRight; set => idStumbleSideRight = value; }
+    public int IdNoMove => idNoMove;
     public bool NoMove { get => noMove; set => noMove = value; }
     public Vector3 Position => myTransform.position;
 
@@ -82,8 +84,8 @@ public class PlayerController : MonoBehaviour
     {
         // 0=> Base Layer
         myAnimation.SetLayerWeight(0, 1);
-        if (restoreXPosition)
-            StartCoroutine(RestoreXPositionCourotine());
+        //if (restoreXPosition)
+        //    StartCoroutine(RestoreXPositionCourotine());
         if (isCrossFade)
             myAnimation.CrossFadeInFixedTime(id, fadeTime);
         else
@@ -121,15 +123,27 @@ public class PlayerController : MonoBehaviour
         hasChangeSaveXPosition = false;
     }
 
-    public void RestoreXPostion() => hasChangeSaveXPosition = true; //UpdatePlayerXPosition(oldPosition);
+    public void RestoreXPostion()
+    {
+        UpdatePlayerXPosition((Side)saveXPosition);
+        // hasChangeSaveXPosition = true;
+    }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         myTransform = GetComponent<Transform>();
         myAnimation = GetComponent<Animator>();
         _myCharacterController = GetComponent<CharacterController>();
         playerCollision = GetComponent<PlayerCollision>();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        //myTransform = GetComponent<Transform>();
+        //myAnimation = GetComponent<Animator>();
+        //_myCharacterController = GetComponent<CharacterController>();
+        //playerCollision = GetComponent<PlayerCollision>();
 
         //myAnimation.SetBool(idNoMove, noAnimation);
         tunnelController = null;
@@ -269,6 +283,7 @@ public class PlayerController : MonoBehaviour
     {
         motionVector = new Vector3(xPosition - myTransform.position.x, yPosition * Time.deltaTime, fowardSpeed * Time.deltaTime);
         xPosition = Mathf.Lerp(xPosition, newXPosition, Time.deltaTime * dodgeSpeed);
+
         //playerTransform.position = new Vector3(xPosition, 0, 0);
         // cuidado es relativo no absoluto
         _myCharacterController.Move(motionVector);

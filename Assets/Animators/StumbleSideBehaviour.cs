@@ -20,6 +20,7 @@ public class StumbleSideBehaviour : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.SetBool("StumbleSideEnd", true);
+        base.OnStateExit(animator, stateInfo, layerIndex);
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
