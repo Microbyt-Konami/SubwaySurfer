@@ -79,6 +79,8 @@ public class ShaderController : MonoBehaviour
 
                 yield return null;
             } while (transitionTime < waitForTransition);
+            curveXInitial = curveX;
+            curveYInitial = curveY;
         }
     }
 }

@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator DoCountDown()
     {
+        playerController.SetPlayerAnimator(playerController.IdNoMove, false);
         playerController.NoMove = true;
         isCountDown = true;
         for (secondCountDown = 3; secondCountDown >= 1; secondCountDown--)
