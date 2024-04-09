@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool isRolling;
     [SerializeField] private bool isJumping;
     [SerializeField] private bool isGrounded;
+    [SerializeField] private bool inRamp;
 
     // Components
     [SerializeField] private Side position;
@@ -193,6 +194,11 @@ public class PlayerController : MonoBehaviour
             print($"Enter Tunnel {other.gameObject.name}");
             tunnelController = other.gameObject.GetComponent<TunnelController>();
         }
+        else if (other.gameObject.CompareTag("Ramp"))
+        {
+            inRamp = true;
+            print("Enter inRamp");
+        }
     }
 
     void OnTriggerExit(Collider other)
@@ -201,6 +207,11 @@ public class PlayerController : MonoBehaviour
         {
             print($"Exit Tunnel {other.gameObject.name}");
             tunnelController = null;
+        }
+        else if (other.gameObject.CompareTag("Ramp"))
+        {
+            inRamp = false;
+            print("Exit inRamp");
         }
     }
 
@@ -230,7 +241,7 @@ public class PlayerController : MonoBehaviour
 
     private void SetPlayerPosition()
     {
-        if (swipeLeft && !isRolling)
+        if (swipeLeft && !isRolling && !inRamp)
         {
             switch (position)
             {
@@ -250,7 +261,7 @@ public class PlayerController : MonoBehaviour
                     break;
             }
         }
-        else if (swipeRight && !isRolling)
+        else if (swipeRight && !isRolling && !inRamp)
         {
             switch (position)
             {
