@@ -92,6 +92,8 @@ public class PlayerController : MonoBehaviour
         else
             myAnimation.Play(id);
         ResetCollision();
+        if (restoreXPosition)
+            hasChangeSaveXPosition = true;
     }
 
     IEnumerator RestoreXPositionCourotine()
@@ -126,8 +128,8 @@ public class PlayerController : MonoBehaviour
 
     public void RestoreXPostion()
     {
-        UpdatePlayerXPosition((Side)saveXPosition);
-        // hasChangeSaveXPosition = true;
+        //UpdatePlayerXPosition((Side)saveXPosition);
+        //hasChangeSaveXPosition = true;
     }
 
     private void Awake()
