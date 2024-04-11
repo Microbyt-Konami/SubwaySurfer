@@ -243,7 +243,7 @@ public class PlayerController : MonoBehaviour
 
     private void SetPlayerPosition()
     {
-        if (swipeLeft && !isRolling && !inRamp)
+        if (swipeLeft && !isRolling && !inRamp && !isJumping)
         {
             switch (position)
             {
@@ -263,7 +263,7 @@ public class PlayerController : MonoBehaviour
                     break;
             }
         }
-        else if (swipeRight && !isRolling && !inRamp)
+        else if (swipeRight && !isRolling && !inRamp && !isJumping)
         {
             switch (position)
             {
