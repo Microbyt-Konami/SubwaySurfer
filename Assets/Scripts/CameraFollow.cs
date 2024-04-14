@@ -32,6 +32,15 @@ public class CameraFollow : MonoBehaviour
 
     //}
 
+    private void OnDrawGizmos()
+    {
+        if (target != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(target.position, Vector3.down * rayDistance);
+        }
+    }
+
     private void LateUpdate()
     {
         followPosition = target.position + cameraOffset;
@@ -45,9 +54,9 @@ public class CameraFollow : MonoBehaviour
 
         if (Physics.Raycast(target.position, Vector3.down, out hitInfo, rayDistance))
             y = Mathf.Lerp(y, hitInfo.point.y, Time.deltaTime * speedOffset);
-        // Comentamos para que solo se user el lerp si la camara está a la distancia (rayDistance) del suelo o vagon
-        //else
-        //    y = Mathf.Lerp(y, target.position.y, Time.deltaTime * speedOffset);
+        // Comentamos para que solo se use el lerp si la camara estï¿½ a la distancia (rayDistance) del suelo o vagon
+        else
+            y = Mathf.Lerp(y, target.position.y, Time.deltaTime * speedOffset);
         followPosition.y = cameraOffset.y + y;
         myTransform.position = followPosition;
     }

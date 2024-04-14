@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool isRolling;
     [SerializeField] private bool isJumping;
     [SerializeField] private bool isGrounded;
+    [SerializeField] private bool inRamp;
 
     // Components
     [SerializeField] private Side position;
@@ -91,6 +92,8 @@ public class PlayerController : MonoBehaviour
         else
             myAnimation.Play(id);
         ResetCollision();
+        if (restoreXPosition)
+            hasChangeSaveXPosition = true;
     }
 
     IEnumerator RestoreXPositionCourotine()
@@ -125,8 +128,8 @@ public class PlayerController : MonoBehaviour
 
     public void RestoreXPostion()
     {
-        UpdatePlayerXPosition((Side)saveXPosition);
-        // hasChangeSaveXPosition = true;
+        //UpdatePlayerXPosition((Side)saveXPosition);
+        //hasChangeSaveXPosition = true;
     }
 
     private void Awake()
@@ -193,6 +196,11 @@ public class PlayerController : MonoBehaviour
             print($"Enter Tunnel {other.gameObject.name}");
             tunnelController = other.gameObject.GetComponent<TunnelController>();
         }
+        else if (other.gameObject.CompareTag("Ramp"))
+        {
+            inRamp = true;
+            print("Enter inRamp");
+        }
     }
 
     void OnTriggerExit(Collider other)
@@ -201,6 +209,11 @@ public class PlayerController : MonoBehaviour
         {
             print($"Exit Tunnel {other.gameObject.name}");
             tunnelController = null;
+        }
+        else if (other.gameObject.CompareTag("Ramp"))
+        {
+            inRamp = false;
+            print("Exit inRamp");
         }
     }
 
@@ -230,7 +243,7 @@ public class PlayerController : MonoBehaviour
 
     private void SetPlayerPosition()
     {
-        if (swipeLeft && !isRolling)
+        if (swipeLeft && !isRolling && !inRamp && !isJumping)
         {
             switch (position)
             {
@@ -250,7 +263,7 @@ public class PlayerController : MonoBehaviour
                     break;
             }
         }
-        else if (swipeRight && !isRolling)
+        else if (swipeRight && !isRolling && !inRamp && !isJumping)
         {
             switch (position)
             {
@@ -299,7 +312,7 @@ public class PlayerController : MonoBehaviour
             // 0 => corresponde al indice del layer por defecto es el 0
             if (myAnimation.GetCurrentAnimatorStateInfo(0).IsName("Fall"))
                 SetPlayerAnimator(idLanding, false);
-            if (swipeUp && !isRolling)
+            if (swipeUp && !isRolling && tunnelController == null)
             {
                 isJumping = true;
                 yPosition = jumpPower;
