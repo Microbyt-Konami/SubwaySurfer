@@ -312,7 +312,7 @@ public class PlayerController : MonoBehaviour
             // 0 => corresponde al indice del layer por defecto es el 0
             if (myAnimation.GetCurrentAnimatorStateInfo(0).IsName("Fall"))
                 SetPlayerAnimator(idLanding, false);
-            if (swipeUp && !isRolling)
+            if (swipeUp && !isRolling && tunnelController == null)
             {
                 isJumping = true;
                 yPosition = jumpPower;
