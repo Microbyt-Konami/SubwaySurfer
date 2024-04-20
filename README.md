@@ -32,4 +32,19 @@
 
   ![JumpRoll](https://github.com/Microbyt-Konami/SubwaySurfer/assets/167362830/af7ab1b7-aea3-4aee-8454-1282fe0f3971)
   </li>
+  <li>
+    <h2>Colisión frontal</h2>
+
+  ![FrontalCollision](https://github.com/Microbyt-Konami/SubwaySurfer/assets/167362830/d1ea2c9a-5e24-4b16-8deb-dc7006049d27)
+  </li>
+  <li>
+    <h2>Colisión lateral sobre vagón</h2>
+
+  ![LateralCollision](https://github.com/Microbyt-Konami/SubwaySurfer/assets/167362830/e6176c8e-4ff0-4c8f-8274-5620b08760e8)
+  </li>
+  <li>
+    <h2>Colisión con muerte sobre la pantalla</h2>
+
+  ![DeathAgainstScreen](https://github.com/Microbyt-Konami/SubwaySurfer/assets/167362830/f7148545-5f72-4a24-8e51-7193f73b084b)
+  </li>
 </ul>
