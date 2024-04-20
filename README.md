@@ -21,3 +21,9 @@
   <li>death_upper</li>
 </ul>
 <h1>Previo del Juego</h1>
+<ul>
+  <li>
+    <h2>Cambio de carriles</h2>
+    ![LaneChange](https://github.com/Microbyt-Konami/SubwaySurfer/assets/167362830/66609a1a-043c-487b-b6ba-413ad32ec5b4)
+  </li>
+</ul>
