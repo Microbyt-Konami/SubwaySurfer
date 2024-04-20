@@ -25,6 +25,11 @@
   <li>
     <h2>Cambio de carriles</h2>
     
-    ![LaneChange](https://github.com/Microbyt-Konami/SubwaySurfer/assets/167362830/66609a1a-043c-487b-b6ba-413ad32ec5b4)
+  ![LaneChange](https://github.com/Microbyt-Konami/SubwaySurfer/assets/167362830/aee49157-cc25-4eb5-bcc9-c2321ea30ff6)
+  </li>
+  <li>
+    <h2>Salto y rodamiento</h2>
+
+  ![JumpRoll](https://github.com/Microbyt-Konami/SubwaySurfer/assets/167362830/af7ab1b7-aea3-4aee-8454-1282fe0f3971)
   </li>
 </ul>
