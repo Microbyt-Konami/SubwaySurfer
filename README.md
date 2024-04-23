@@ -1,5 +1,6 @@
-<h1>Juegio Subway Surfer</h1>
-<h3>Prototipo en 3D en el que muestro jugador va andando sobre los railes esquivando trenes y obstaculos</h3>
+<h1>Juego Subway Surfer</h1>
+<h3>Descripción del juego</h3>
+<p>Prototipo en 3D en el que muestro jugador va andando sobre los railes esquivando trenes y obstaculos</p>
 <h2>Animaciones</h2>
 <ul>
   <li>dodgeLeft</li>
