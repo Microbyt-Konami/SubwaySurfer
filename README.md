@@ -1,6 +1,12 @@
 <h1>Juego Subway Surfer</h1>
 <h3>Descripción del juego</h3>
 <p>Prototipo en 3D en el que muestro jugador va andando sobre los railes esquivando trenes y obstaculos</p>
+<p>El movimiento es a traves de las flechas del tecla:</p>
+<ul>
+  <li>Cambiar carril : ←  →</li>
+  <li>Saltar :  ↑</li>
+  <li>Rodar :  ↓</li>
+</ul>
 <h2>Animaciones</h2>
 <ul>
   <li>dodgeLeft</li>
